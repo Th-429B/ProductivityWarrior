@@ -26,7 +26,7 @@ function MyTabs() {
                     }
 
                     // You can return any component that you like here!
-                    return <AntDesign name= {iconName} size={24} color="black"/>;
+                    return <AntDesign name= {iconName} size={24} color={color}/>;
                 },
             })}
             tabBarOptions={{
