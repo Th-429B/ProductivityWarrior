@@ -6,7 +6,7 @@ function CalendarScreen() {
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
     return (
-        <SafeAreaView style={{paddingTop: paddingValue}}>
+        <SafeAreaView style={{paddingTop: paddingValue, backgroundColor: 'white'}}>
             <View stlye={{marginTop: 10, marginBottom: 10}}>
                 <CalendarList
                     // Callback which gets executed when visible months change in scroll view. Default = undefined
