@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, SafeAreaView, Platform, StatusBar} from 'react-native';
+import {
+    View,
+    TouchableOpacity,
+    SafeAreaView,
+    Platform,
+    StatusBar,
+    KeyboardAvoidingView,
+    StyleSheet,
+    TextInput
+} from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
 
@@ -8,40 +17,46 @@ const timeToString = (time) => {
     return date.toISOString().split('T')[0];
 };
 
+let x;
+// function to check if the date already has an event.
+const findDate = (date) => {
+    for (x in items) {
+        if ( x === date) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// can add time here as another text. Sample json events
+const items = {
+    '2021-05-26': [{name: 'Family Dinner'}],
+    '2021-05-27': [{name: 'React Native workshop'}],
+    '2021-05-28': [],
+    '2021-05-29': [{name: 'Sample event text'}, {name: 'More sample event text'}]
+};
+
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
 const CalendarScreen = () => {
-    // can add time here as another text.
-    const [items, setItems] = useState({
-        '2021-05-26': [{name: 'Family Dinner'}],
-        '2021-05-27': [{name: 'React Native workshop'}],
-        '2021-05-28': [],
-        '2021-05-29': [{name: 'Sample event text'}, {name: 'More sample event text'}]
-    });
 
-    const loadItems = (day) => {
-        setTimeout(() => {
-            for (let i = -15; i < 85; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const strTime = timeToString(time);
-                if (!items[strTime]) {
-                    items[strTime] = [];
-                    const numItems = Math.floor(Math.random() * 3 + 1);
-                    for (let j = 0; j < numItems; j++) {
-                        items[strTime].push({
-                            name: 'Item for ' + strTime + ' #' + j,
-                            height: Math.max(50, Math.floor(Math.random() * 150)),
-                        });
-                    }
-                }
-            }
-            const newItems = {};
-            Object.keys(items).forEach((key) => {
-                newItems[key] = items[key];
-            });
-            setItems(newItems);
-        }, 1000);
-    };
+    const [date, setDate] = useState();
+    const [event, setEvent] = useState();
+
+    const handleDate = () => {
+        console.log(date);
+    }
+    const handleEvent = () => {
+        console.log(event);
+    }
+
+    const addEvent = () => {
+        if (findDate(date)) {
+            items[date].push({name: event})
+        } else {
+            items[date] = [{name: event}]
+        }
+    }
 
     //render the time if time is added as another text prop.
     const renderItem = (item) => {
@@ -72,10 +87,72 @@ const CalendarScreen = () => {
                 <Agenda
                     items = {items}
                     renderItem={renderItem}
+                    // onDayLongPress={(day) => setEvent(day, text)}
+                    // onDayPress={(day) => {findDate(day.dateString)}}
+                    //onDayLongPress={(day) => {console.log(day.dateString)}}
+                    // onDayLongPress={(day) => {setDate(day.dateString)}}
+
                 />
             </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.writeEvent}>
+                <TextInput style={styles.dateInput} placeholder={"YYYY-MM-DD"}
+                           value={date} onChangeText={text => setDate(text)}/>
+                <TextInput style={styles.eventInput} placeholder={"Event!"}
+                           value={event} onChangeText={text => setEvent(text)}/>
+
+                <TouchableOpacity onPress={() => {addEvent()}}>
+                    <View style={styles.addButton}>
+                        <Text style={styles.addText}>+</Text>
+                    </View>
+                </TouchableOpacity>
+
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    writeEvent: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#f3f4f6'
+
+    },
+    dateInput: {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#FFF',
+        borderRadius: 60,
+        borderColor: '#C0C0C0',
+        borderWidth: 1,
+        width: 130,
+    },
+    eventInput: {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#FFF',
+        borderRadius: 60,
+        borderColor: '#C0C0C0',
+        borderWidth: 1,
+        width: 200,
+    },
+    addButton: {
+        width: 50,
+        height: 50,
+        backgroundColor: '#FFF',
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#C0C0C0',
+        borderWidth: 1,
+    }
+})
+
 
 export default CalendarScreen;
