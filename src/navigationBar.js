@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {AntDesign} from "@expo/vector-icons";
 import React from "react";
 import CalendarScreen from "./calendar"
-import TodoListScreen from "./todolist"
+import TodoListScreen from "./todo/todolist"
 import TrackerScreen from "./tracker"
 import ProductivityScreen from "./productivity"
 
