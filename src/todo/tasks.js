@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {MaterialIcons} from "@expo/vector-icons";
 
 const Tasks = (props) => {
 
@@ -11,6 +12,11 @@ const Tasks = (props) => {
                     <Text style={styles.text}>{props.text}</Text>
                 </View>
             </View>
+            <View style={styles.info}>
+                <TouchableOpacity>
+                    <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -19,7 +25,8 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: 'white',
         marginVertical: 7,
-        padding: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -28,13 +35,20 @@ const styles = StyleSheet.create({
     itemLeft: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+    },
+    info: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
     button: {
-        width: 25,
-        height: 25,
+        width: 21,
+        height: 21,
         borderRadius: 50,
-        backgroundColor: '#97d1fc',
+        backgroundColor: 'white',
+        borderColor: '#00adf5',
+        borderWidth: 2,
     },
     textWrapper: {
         flexDirection: 'row',
@@ -42,10 +56,11 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginLeft: 15,
         alignItems: 'center',
+        maxWidth: '80%',
     },
     text: {
-        fontSize: 15,
-    }
+        fontSize: 14,
+    },
 })
 
 export default Tasks;

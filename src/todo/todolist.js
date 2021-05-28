@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         safe: (paddingValue) => ({
             paddingTop: paddingValue,
             flex: 1,
+            backgroundColor: '#f2f4f5',
         }),
         container: {
             paddingTop: 20,
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
             fontWeight: 'bold',
         },
         tasks: {
-            marginTop: 7,
+            marginTop: 20,
         }
     }
 )
