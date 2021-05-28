@@ -32,6 +32,13 @@ function MyTabs() {
             tabBarOptions={{
                 activeTintColor: 'tomato',
                 inactiveTintColor: 'gray',
+                labelStyle: {
+                    fontSize: 11,
+                },
+                tabStyle: {
+                    paddingTop: 2,
+                    paddingBottom: 2,
+                }
             }}
         >
 
