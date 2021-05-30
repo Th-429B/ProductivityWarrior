@@ -1,6 +1,14 @@
 import React from "react"
-import {Platform, StatusBar, Text, View, SafeAreaView, StyleSheet} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    Text,
+    View,
+    SafeAreaView,
+    StyleSheet,
+} from "react-native";
 import Tasks from './tasks';
+import NewTask from './newTask'
 
 function TodoListScreen() {
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
@@ -15,6 +23,8 @@ function TodoListScreen() {
                     <Tasks text={'Hello my name is bob and i am a person that is amazing, please do not leave your belongings unattended.'}/>
                 </View>
             </View>
+
+            <NewTask/>
         </SafeAreaView>
     );
 }
