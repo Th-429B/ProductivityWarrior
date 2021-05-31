@@ -34,7 +34,10 @@ const items = {
     '2021-05-26': [{name: 'Family Dinner'}],
     '2021-05-27': [{name: 'React Native workshop'}],
     '2021-05-28': [],
-    '2021-05-29': [{name: 'Sample event text'}, {name: 'More sample event text'}]
+    '2021-05-29': [{name: 'Sample event text'}, {name: 'More sample event text'},{name: 'More sample event text'}
+        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'More sample event text'}
+        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'More sample event text'}
+        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'last item'}]
 };
 
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
@@ -58,6 +61,10 @@ const CalendarScreen = () => {
             items[date] = [{name: event}]
         }
         Keyboard.dismiss();
+    }
+
+    const rowHasChanged = (r1, r2) => {
+        return r1.name !== r2.name;
     }
 
     //render the time if time is added as another text prop.
@@ -85,10 +92,13 @@ const CalendarScreen = () => {
 
     return (
         <SafeAreaView style={{paddingTop: paddingValue, backgroundColor: 'white', flex:1}}>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, marginBottom: 65}}>
+                {/* added the margin to fix last event not showing but calendar on tops kinda gets fked*/}
                 <Agenda
+                    selected={'2021-05-26'}
                     items = {items}
                     renderItem={renderItem}
+                    rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
                     // onDayLongPress={(day) => setEvent(day, text)}
                     // onDayPress={(day) => {findDate(day.dateString)}}
                     //onDayLongPress={(day) => {console.log(day.dateString)}}
@@ -109,6 +119,8 @@ const CalendarScreen = () => {
                         <Text style={styles.addText}>+</Text>
                     </View>
                 </TouchableOpacity>
+            <View style = {{height: 65, bottom:0}}/>
+                {/*This is to cover the gap*/}
 
             </KeyboardAvoidingView>
         </SafeAreaView>
@@ -117,8 +129,9 @@ const CalendarScreen = () => {
 
 const styles = StyleSheet.create({
     writeEvent: {
+        flex:1,
         position: 'absolute',
-        bottom: 10,
+        bottom: 0,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
