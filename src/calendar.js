@@ -7,7 +7,8 @@ import {
     StatusBar,
     KeyboardAvoidingView,
     StyleSheet,
-    TextInput
+    TextInput,
+    Keyboard
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
@@ -56,6 +57,7 @@ const CalendarScreen = () => {
         } else {
             items[date] = [{name: event}]
         }
+        Keyboard.dismiss();
     }
 
     //render the time if time is added as another text prop.

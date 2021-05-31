@@ -10,8 +10,7 @@ const NewTask = () => {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
-                              style={styles.createTask}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.createTask}>
             <TextInput style={styles.input} placeholder={"Write a new task"} value={task} onChangeText={text => setTask(text)}/>
             <TouchableOpacity onPress={() => handleNewTask()}>
                 <View style={styles.submit}>
