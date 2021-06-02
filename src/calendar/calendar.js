@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
+import eventData from "./eventData";
 
 const timeToString = (time) => {
     const date = new Date(time);
@@ -21,24 +22,13 @@ const timeToString = (time) => {
 let x;
 // function to check if the date already has an event.
 const findDate = (date) => {
-    for (x in items) {
+    for (x in eventData) {
         if ( x === date) {
             return true;
         }
     }
     return false;
 }
-
-// can add time here as another text. Sample json events
-const items = {
-    '2021-05-26': [{name: 'Family Dinner'}],
-    '2021-05-27': [{name: 'React Native workshop'}],
-    '2021-05-28': [],
-    '2021-05-29': [{name: 'Sample event text'}, {name: 'More sample event text'},{name: 'More sample event text'}
-        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'More sample event text'}
-        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'More sample event text'}
-        ,{name: 'More sample event text'},{name: 'More sample event text'},{name: 'last item'}]
-};
 
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
@@ -56,9 +46,9 @@ const CalendarScreen = () => {
 
     const addEvent = () => {
         if (findDate(date)) {
-            items[date].push({name: event})
+            eventData[date].push({name: event})
         } else {
-            items[date] = [{name: event}]
+            eventData[date] = [{name: event}]
         }
         Keyboard.dismiss();
     }
@@ -96,7 +86,7 @@ const CalendarScreen = () => {
                 {/* added the margin to fix last event not showing but calendar on tops kinda gets fked*/}
                 <Agenda
                     selected={'2021-05-26'}
-                    items = {items}
+                    items = {eventData}
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
                     // onDayLongPress={(day) => setEvent(day, text)}
