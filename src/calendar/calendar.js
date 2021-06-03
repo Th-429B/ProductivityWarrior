@@ -8,11 +8,12 @@ import {
     KeyboardAvoidingView,
     StyleSheet,
     TextInput,
-    Keyboard
+    Keyboard, Modal
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
 import eventData from "./eventData";
+import AddEventModal from "./AddEventModal";
 
 const timeToString = (time) => {
     const date = new Date(time);
@@ -36,6 +37,7 @@ const CalendarScreen = () => {
 
     const [date, setDate] = useState();
     const [event, setEvent] = useState();
+    const [modalVisible, setModalVisibility] = useState(false);
 
     const handleDate = () => {
         console.log(date);
@@ -82,7 +84,14 @@ const CalendarScreen = () => {
 
     return (
         <SafeAreaView style={{paddingTop: paddingValue, backgroundColor: 'white', flex:1}}>
-            <View style={{flex: 1, marginBottom: 65}}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                onRequestClose={() => {setModalVisibility(!modalVisible);}}
+            >
+                <AddEventModal/>
+            </Modal>
+            <View style={{flex: 1}}>
                 {/* added the margin to fix last event not showing but calendar on tops kinda gets fked*/}
                 <Agenda
                     selected={'2021-05-26'}
@@ -96,23 +105,9 @@ const CalendarScreen = () => {
 
                 />
             </View>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.writeEvent}>
-                <TextInput style={styles.dateInput} placeholder={"YYYY-MM-DD"}
-                           value={date} onChangeText={text => setDate(text)}/>
-                <TextInput style={styles.eventInput} placeholder={"Event!"}
-                           value={event} onChangeText={text => setEvent(text)}/>
-
-                <TouchableOpacity onPress={() => {addEvent()}}>
-                    <View style={styles.addButton}>
-                        <Text style={styles.addText}>+</Text>
-                    </View>
-                </TouchableOpacity>
-            <View style = {{height: 65, bottom:0}}/>
-                {/*This is to cover the gap*/}
-
-            </KeyboardAvoidingView>
+            <TouchableOpacity style={styles.addButton} onPress={() => {setModalVisibility(!modalVisible)}}>
+                <Text style={styles.addText}>+</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -129,35 +124,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#f3f4f6'
 
     },
-    dateInput: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: '#FFF',
-        borderRadius: 50,
-        borderColor: '#C0C0C0',
-        borderWidth: 1,
-        height: 50,
-        width: 130,
-    },
-    eventInput: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: '#FFF',
-        borderRadius: 50,
-        borderColor: '#C0C0C0',
-        borderWidth: 1,
-        width: 200,
-        height: 50,
-    },
     addButton: {
+        position:'absolute',
         width: 50,
         height: 50,
-        backgroundColor: '#FFF',
         borderRadius: 50,
+        bottom:10,
+        left:10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#C0C0C0',
         borderWidth: 1,
+        backgroundColor: '#FFF',
+        borderColor: '#C0C0C0',
+    },
+    addText: {
+        fontSize:18
     }
 })
 
