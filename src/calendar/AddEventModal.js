@@ -10,6 +10,7 @@ import {
     View
 } from "react-native";
 import eventData from "./eventData";
+import {AntDesign} from "@expo/vector-icons";
 
 let x;
 // function to check if the date already has an event.
@@ -22,10 +23,18 @@ const findDate = (date) => {
     return false;
 }
 
-const AddEventModal = () => {
+//passing the closeModal prop to AddEventModal
+const AddEventModal = ({closeModal}) => {
 
     const [date, setDate] = useState();
     const [event, setEvent] = useState();
+
+    const handleDate = () => {
+        console.log(date);
+    }
+    const handleEvent = () => {
+        console.log(event);
+    }
 
     const addEvent = () => {
         if (findDate(date)) {
@@ -40,16 +49,21 @@ const AddEventModal = () => {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.writeEvent}>
-            <TextInput style={styles.dateInput} placeholder={"YYYY-MM-DD"}
-                       value={date} onChangeText={text => setDate(text)}/>
-            <TextInput style={styles.eventInput} placeholder={"Event!"}
-                       value={event} onChangeText={text => setEvent(text)}/>
-            <TouchableOpacity onPress={() => {addEvent(); }}>
-                <View style={styles.addButton}>
-                    <Text style={styles.addText}>+</Text>
-                </View>
+            <TouchableOpacity style={styles.closeButton} onPress={() => closeModal()}>
+                <AntDesign name="close" size={24} color={'black'}/>
             </TouchableOpacity>
+            <View style={{alignSelf: "stretch", marginHorizontal: 32}}>
+                <Text style={styles.title}>Add an Event</Text>
 
+            <TextInput style={styles.input} placeholder={"YYYY-MM-DD"}
+                       value={date} onChangeText={text => setDate(text)}/>
+            <TextInput style={styles.input} placeholder={"Event!"}
+                       value={event} onChangeText={text => setEvent(text)}/>
+
+            <TouchableOpacity style={styles.add} onPress={() => {addEvent(); }}>
+                <Text style={{color: "white", fontWeight: 'bold', fontSize: 18}}>Add!</Text>
+            </TouchableOpacity>
+            </View>
 
         </KeyboardAvoidingView>
     );
@@ -58,34 +72,39 @@ const AddEventModal = () => {
 const styles = StyleSheet.create({
     writeEvent: {
         flex:1,
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f3f4f6'
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        color:'black',
+        alignSelf: "center",
+        marginBottom: 16
 
     },
-    dateInput: {
-        paddingVertical: 15,
+    input: {
         paddingHorizontal: 15,
         backgroundColor: '#FFF',
-        borderRadius: 50,
-        borderColor: '#C0C0C0',
+        borderRadius: 6,
+        borderColor: 'blue',
         borderWidth: 1,
         height: 50,
-        width: 130,
+        marginBottom: 15,
+        fontSize: 18
     },
-    eventInput: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: '#FFF',
-        borderRadius: 50,
-        borderColor: '#C0C0C0',
-        borderWidth: 1,
-        width: 200,
+    add: {
+        marginTop: 24,
         height: 50,
+        borderRadius: 6,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "blue"
+    },
+    closeButton: {
+        position:"absolute",
+        top: 32,
+        right: 32
     }
 })
 

@@ -35,24 +35,10 @@ const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
 const CalendarScreen = () => {
 
-    const [date, setDate] = useState();
-    const [event, setEvent] = useState();
     const [modalVisible, setModalVisibility] = useState(false);
 
-    const handleDate = () => {
-        console.log(date);
-    }
-    const handleEvent = () => {
-        console.log(event);
-    }
-
-    const addEvent = () => {
-        if (findDate(date)) {
-            eventData[date].push({name: event})
-        } else {
-            eventData[date] = [{name: event}]
-        }
-        Keyboard.dismiss();
+    const toggleModalVisibility = () => {
+        setModalVisibility(!modalVisible);
     }
 
     const rowHasChanged = (r1, r2) => {
@@ -87,9 +73,9 @@ const CalendarScreen = () => {
             <Modal
                 animationType="slide"
                 visible={modalVisible}
-                onRequestClose={() => {setModalVisibility(!modalVisible);}}
+                onRequestClose={() => toggleModalVisibility()}
             >
-                <AddEventModal/>
+                <AddEventModal closeModal={toggleModalVisibility}/>
             </Modal>
             <View style={{flex: 1}}>
                 {/* added the margin to fix last event not showing but calendar on tops kinda gets fked*/}
@@ -97,7 +83,7 @@ const CalendarScreen = () => {
                     selected={'2021-05-26'}
                     items = {eventData}
                     renderItem={renderItem}
-                    rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+                    rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
                     // onDayLongPress={(day) => setEvent(day, text)}
                     // onDayPress={(day) => {findDate(day.dateString)}}
                     //onDayLongPress={(day) => {console.log(day.dateString)}}
@@ -133,9 +119,9 @@ const styles = StyleSheet.create({
         left:10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
+        borderWidth: 0.5,
         backgroundColor: '#FFF',
-        borderColor: '#C0C0C0',
+        borderColor: 'blue',
     },
     addText: {
         fontSize:18
