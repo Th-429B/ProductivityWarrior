@@ -1,7 +1,6 @@
 # ProductivityWarrior
 [![Inline docs](http://inch-ci.org/github/Th-429B/ProductivityWarrior.svg?branch=main)](http://inch-ci.org/github/Th-429B/ProductivityWarrior)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-[![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
 
 ## Description
 * This is a project for NUS CP2106 Orbital
