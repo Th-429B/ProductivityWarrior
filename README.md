@@ -1,7 +1,7 @@
 # ProductivityWarrior
 [![Inline docs](http://inch-ci.org/github/Th-429B/ProductivityWarrior.svg?branch=main)](http://inch-ci.org/github/Th-429B/ProductivityWarrior)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]
-[![React](https://img.shields.io/badge/Code-React_Native-blue.svg)]
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]()
+[![React](https://img.shields.io/badge/Code-React_Native-blue.svg)]()
 
 
 ## Description
