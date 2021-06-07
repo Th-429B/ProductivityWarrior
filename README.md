@@ -1,7 +1,10 @@
 # ProductivityWarrior
 [![Inline docs](http://inch-ci.org/github/Th-429B/ProductivityWarrior.svg?branch=main)](http://inch-ci.org/github/Th-429B/ProductivityWarrior)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Th-429B/ProductivityWarrior/)
-[![React](https://img.shields.io/badge/Code-React_Native-blue.svg)](https://reactnative.dev)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://www.javascript.com)
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev)
+[![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)](https://www.apple.com)
+[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://www.android.com)
 
 
 ## Description
