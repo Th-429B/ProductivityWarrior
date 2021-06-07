@@ -1,12 +1,22 @@
 import React, {useState} from 'react'
 import {Keyboard, View, Text, StyleSheet, Platform, TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native";
+import uuid from 'react-native-uuid'
 
-const NewTask = () => {
+const NewTask = ({todos, addTodos}) => {
     const [task, setTask] = useState();
 
     const handleNewTask = () => {
+        if (task !== null) {
+            const ID = uuid.v4();
+            const newTodo = {
+                id: ID,
+                created: Date.now(),
+                text: task,
+            }
+            addTodos(newTodo);
+            setTask(null);
+        }
         Keyboard.dismiss();
-        console.log(task);
     }
 
     return (
