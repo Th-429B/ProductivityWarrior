@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {
     Platform,
     StatusBar,
@@ -11,6 +11,8 @@ import Tasks from './tasks';
 import NewTask from './newTask'
 
 function TodoListScreen() {
+    const [state, setState] = useState([])
+
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
     return (
@@ -18,13 +20,10 @@ function TodoListScreen() {
             <View style = {styles.container}>
                 <Text style = {styles.header}>Today's Tasks</Text>
                 <View style = {styles.tasks}>
-                    <Tasks text={'Text1'}/>
-                    <Tasks text={'Text2: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}/>
-                    <Tasks text={'Hello my name is bob and i am a person that is amazing, please do not leave your belongings unattended.'}/>
+                    {state.map((item, index) => {return <Tasks text={item['text']} key = {index}/>})}
                 </View>
             </View>
-
-            <NewTask/>
+            <NewTask todos={state} addTodos={(todo) => setState([...state, todo])}/>
         </SafeAreaView>
     );
 }
