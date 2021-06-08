@@ -2,13 +2,21 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 
-const Tasks = (props) => {
-
+const Tasks = ({task, state, setState, index}) => {
+    const setComplete = () => {
+        if (task['completed'] === false) {
+            const newTodos = [...state];
+            newTodos.splice(index, 1);
+            task['completed'] = true;
+            newTodos.push(task);
+            setState(newTodos);
+        }
+    }
     return (
         <View style={styles.item}>
-            <TouchableOpacity style={styles.button}></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => setComplete()}/>
             <View style={styles.textWrapper}>
-                <Text style={styles.text}>{props.text}</Text>
+                <Text style={styles.text}>{task['text']}</Text>
             </View>
             <TouchableOpacity>
                 <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
