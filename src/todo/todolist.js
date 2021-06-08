@@ -20,10 +20,15 @@ function TodoListScreen() {
             <View style = {styles.container}>
                 <Text style = {styles.header}>Today's Tasks</Text>
                 <View style = {styles.tasks}>
-                    {state.map((item, index) => {return <Tasks text={item['text']} key = {index}/>})}
+                    {state.filter((item) => item['completed'] === false).map((item, index) => {
+                        return <Tasks task={item} state={state} setState={(newList) => setState(newList)}
+                                      index={state.indexOf(item)} key={index}/>})}
+                    {state.filter((item) => item['completed'] === true).map((item, index) => {
+                        return <Tasks task={item} state={state} setState={(newList) => setState(newList)}
+                                      index={state.indexOf(item)} key={index}/>})}
                 </View>
             </View>
-            <NewTask todos={state} addTodos={(todo) => setState([...state, todo])}/>
+            <NewTask addTodos={(todo) => setState([...state, todo])}/>
         </SafeAreaView>
     );
 }

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Keyboard, View, Text, StyleSheet, Platform, TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native";
 import uuid from 'react-native-uuid'
 
-const NewTask = ({todos, addTodos}) => {
+const NewTask = ({addTodos}) => {
     const [task, setTask] = useState();
 
     const handleNewTask = () => {
@@ -12,6 +12,7 @@ const NewTask = ({todos, addTodos}) => {
                 id: ID,
                 created: Date.now(),
                 text: task,
+                completed: false,
             }
             addTodos(newTodo);
             setTask(null);
