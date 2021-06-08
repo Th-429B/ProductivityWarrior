@@ -14,6 +14,7 @@ import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
 import eventData from "./eventData";
 import AddEventModal from "./AddEventModal";
+import {AntDesign} from "@expo/vector-icons";
 
 const timeToString = (time) => {
     const date = new Date(time);
@@ -29,6 +30,28 @@ const findDate = (date) => {
         }
     }
     return false;
+}
+
+const deleteEvent = (name) => {
+    // console.log(name)
+    let date;
+    let index = -1;
+    let count;
+    for (date in eventData) {
+        count = 0;
+        if (index > 0) {
+            break;
+        }
+        eventData[date].forEach(function (event) {
+            if(event.name === name) {
+                index = count;
+                eventData[date].splice(index, 1)
+                return;
+            }
+            count += 1;
+        })
+    }
+
 }
 
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
@@ -48,7 +71,7 @@ const CalendarScreen = () => {
     //render the time if time is added as another text prop.
     const renderItem = (item) => {
         return (
-            <TouchableOpacity style={{marginRight: 10, marginTop: 17}}>
+            <View style={{marginRight: 10, marginTop: 17}}>
                 <Card>
                     <Card.Content>
                         <View
@@ -62,9 +85,13 @@ const CalendarScreen = () => {
                             </Text>
                             <Avatar.Text labelStyle = {{textTransform: 'capitalize'}} label = {item.name.charAt(0)}/>
                         </View>
+                        <TouchableOpacity style={styles.closeButton} onPress={() => deleteEvent(item.name)}>
+                            <AntDesign name="close" size={18} color={'black'}/>
+                        </TouchableOpacity>
                     </Card.Content>
+
                 </Card>
-            </TouchableOpacity>
+            </View>
         );
     };
 
@@ -84,6 +111,8 @@ const CalendarScreen = () => {
                     items = {eventData}
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
+                    // shld fix the loading in ios
+                    renderEmptyData={() => null}
                     // onDayLongPress={(day) => setEvent(day, text)}
                     // onDayPress={(day) => {findDate(day.dateString)}}
                     //onDayLongPress={(day) => {console.log(day.dateString)}}
@@ -125,6 +154,11 @@ const styles = StyleSheet.create({
     },
     addText: {
         fontSize:18
+    },
+    closeButton: {
+        position:'absolute',
+        top: 5,
+        right: 5
     }
 })
 
