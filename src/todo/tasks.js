@@ -6,33 +6,43 @@ const Tasks = ({task, state, setState, index}) => {
     const setComplete = () => {
         if (task['completed'] === false) {
             const newTodos = [...state];
-            newTodos.splice(index, 1);
             task['completed'] = true;
-            newTodos.push(task);
+            newTodos[index] = task;
+            setState(newTodos);
+        }
+    }
+
+    const setIncomplete = () => {
+        if (task['completed'] === true) {
+            const newTodos = [...state];
+            task['completed'] = false;
+            newTodos[index] = task;
             setState(newTodos);
         }
     }
 
     const incompleteView = () => {
         return (
-            <View style={styles.item}>
-                <TouchableOpacity onPress={() => setComplete()}>
-                    <MaterialIcons name="radio-button-unchecked" size={24} color={"#00adf5"} />
-                </TouchableOpacity>
-                <View style={styles.textWrapper}>
-                    <Text style={styles.text}>{task['text']}</Text>
+                <View style={styles.item}>
+                    <TouchableOpacity onPress={() => setComplete()}>
+                        <MaterialIcons name="radio-button-unchecked" size={24} color={"#00adf5"} />
+                    </TouchableOpacity>
+                    <View style={styles.textWrapper}>
+                        <Text style={styles.text}>{task['text']}</Text>
+                    </View>
+                    <TouchableOpacity>
+                        <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
-                </TouchableOpacity>
-            </View>
         )
     }
 
     const completeView = () => {
         return (
             <View style={styles.item}>
-                <MaterialIcons name="check-circle" size={24} color='grey' />
+                <TouchableOpacity onPress={() => setIncomplete()}>
+                    <MaterialIcons name="check-circle" size={24} color='grey' />
+                </TouchableOpacity>
                 <View style={styles.textWrapper}>
                     <Text style={styles.complete}>{task['text']}</Text>
                 </View>
