@@ -5,7 +5,6 @@ import {
     SafeAreaView,
     Platform,
     StatusBar,
-    KeyboardAvoidingView,
     StyleSheet,
     TextInput,
     Keyboard, Modal
@@ -15,15 +14,17 @@ import {Card, Avatar, Text} from 'react-native-paper';
 import eventData from "./eventData";
 import AddEventModal from "./AddEventModal";
 import {AntDesign} from "@expo/vector-icons";
+import DeleteEventModal from "./DeleteEventModal";
 
 const timeToString = (time) => {
     const date = new Date(time);
     return date.toISOString().split('T')[0];
 };
 
-let x;
+
 // function to check if the date already has an event.
 const findDate = (date) => {
+    let x;
     for (x in eventData) {
         if ( x === date) {
             return true;
@@ -32,36 +33,22 @@ const findDate = (date) => {
     return false;
 }
 
-const deleteEvent = (name) => {
-    // console.log(name)
-    let date;
-    let index = -1;
-    let count;
-    for (date in eventData) {
-        count = 0;
-        if (index > 0) {
-            break;
-        }
-        eventData[date].forEach(function (event) {
-            if(event.name === name) {
-                index = count;
-                eventData[date].splice(index, 1)
-                return;
-            }
-            count += 1;
-        })
-    }
-
-}
-
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
 const CalendarScreen = () => {
 
-    const [modalVisible, setModalVisibility] = useState(false);
+    const [modalDeleteVisible, setModalDeleteVisibility] = useState(false);
+    const [modalAddVisible, setModalAddVisibility] = useState(false);
 
-    const toggleModalVisibility = () => {
-        setModalVisibility(!modalVisible);
+
+    const [eventName, setEventName] = useState("test");
+
+    const toggleModalAddVisibility = () => {
+        setModalAddVisibility(!modalAddVisible);
+    }
+
+    const toggleModalDeleteVisibility = () => {
+        setModalDeleteVisibility(!modalDeleteVisible);
     }
 
     const rowHasChanged = (r1, r2) => {
@@ -85,7 +72,9 @@ const CalendarScreen = () => {
                             </Text>
                             <Avatar.Text labelStyle = {{textTransform: 'capitalize'}} label = {item.name.charAt(0)}/>
                         </View>
-                        <TouchableOpacity style={styles.closeButton} onPress={() => deleteEvent(item.name)}>
+                        <TouchableOpacity style={styles.closeButton}
+                                          onPress={() => {toggleModalDeleteVisibility();
+                                              setEventName(item.name);}}>
                             <AntDesign name="close" size={18} color={'black'}/>
                         </TouchableOpacity>
                     </Card.Content>
@@ -99,20 +88,28 @@ const CalendarScreen = () => {
         <SafeAreaView style={{paddingTop: paddingValue, backgroundColor: 'white', flex:1}}>
             <Modal
                 animationType="slide"
-                visible={modalVisible}
-                onRequestClose={() => toggleModalVisibility()}
+                visible={modalAddVisible}
+                onRequestClose={() => toggleModalAddVisibility()}
             >
-                <AddEventModal closeModal={toggleModalVisibility}/>
+                <AddEventModal closeModal={() => toggleModalAddVisibility()}/>
             </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDeleteVisible}
+                onRequestClose={() => toggleModalDeleteVisibility()}
+            >
+                <DeleteEventModal closeModal={() => toggleModalDeleteVisibility()} name={eventName}/>
+            </Modal>
+
             <View style={{flex: 1}}>
-                {/* added the margin to fix last event not showing but calendar on tops kinda gets fked*/}
                 <Agenda
                     selected={'2021-05-26'}
                     items = {eventData}
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
-                    // shld fix the loading in ios
+                    // should fix the loading in ios
                     renderEmptyData={() => null}
+                    renderEmptyDate={() => null}
                     // onDayLongPress={(day) => setEvent(day, text)}
                     // onDayPress={(day) => {findDate(day.dateString)}}
                     //onDayLongPress={(day) => {console.log(day.dateString)}}
@@ -120,7 +117,7 @@ const CalendarScreen = () => {
 
                 />
             </View>
-            <TouchableOpacity style={styles.addButton} onPress={() => {setModalVisibility(!modalVisible)}}>
+            <TouchableOpacity style={styles.addButton} onPress={() => {toggleModalAddVisibility()}}>
                 <Text style={styles.addText}>+</Text>
             </TouchableOpacity>
         </SafeAreaView>
