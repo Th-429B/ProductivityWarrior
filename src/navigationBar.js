@@ -12,7 +12,7 @@ function MyTabs() {
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
-                tabBarIcon: ({focused, color, size}) => {
+                tabBarIcon: ({color}) => {
                     let iconName;
 
                     if (route.name === 'Calendar') {
@@ -33,12 +33,8 @@ function MyTabs() {
                 activeTintColor: 'tomato',
                 inactiveTintColor: 'gray',
                 labelStyle: {
-                    fontSize: 11,
+                    fontSize: 12,
                 },
-                tabStyle: {
-                    paddingTop: 2,
-                    paddingBottom: 2,
-                }
             }}
         >
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
-import Interactable from 'react-native-interactable';
 
 const Tasks = ({task, state, setState, index}) => {
     const setComplete = () => {
@@ -24,7 +23,6 @@ const Tasks = ({task, state, setState, index}) => {
 
     const incompleteView = () => {
         return (
-            <Interactable.View horizontalOnly={true} resistance={3000}>
                 <View style={styles.item}>
                     <TouchableOpacity onPress={() => setComplete()}>
                         <MaterialIcons name="radio-button-unchecked" size={24} color={"#00adf5"} />
@@ -36,7 +34,6 @@ const Tasks = ({task, state, setState, index}) => {
                         <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
                     </TouchableOpacity>
                 </View>
-            </Interactable.View>
         )
     }
 
