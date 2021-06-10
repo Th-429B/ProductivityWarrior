@@ -1,8 +1,16 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
+import Modal from 'react-native-modal';
+import EditTask from './editTaskModal'
 
 const Tasks = ({task, state, setState, index}) => {
+    const [infoVisibility, setInfoVisibility] =useState(false);
+
+    const toggleInfoVisibility = () => {
+        setInfoVisibility(!infoVisibility);
+    }
+
     const setComplete = () => {
         if (task['completed'] === false) {
             const newTodos = [...state];
@@ -30,7 +38,7 @@ const Tasks = ({task, state, setState, index}) => {
                     <View style={styles.textWrapper}>
                         <Text style={styles.text}>{task['text']}</Text>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => toggleInfoVisibility()}>
                         <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
                     </TouchableOpacity>
                 </View>
@@ -46,12 +54,20 @@ const Tasks = ({task, state, setState, index}) => {
                 <View style={styles.textWrapper}>
                     <Text style={styles.complete}>{task['text']}</Text>
                 </View>
-                <MaterialIcons name="info-outline" size={24} color='grey'/>
             </View>
         )
     }
 
-    return task['completed'] === false ? incompleteView() : completeView()
+    return (
+        <View>
+            {task['completed'] === false ? incompleteView() : completeView()}
+
+            <Modal onBackButtonPress={() => toggleInfoVisibility()} onBackdropPress={() => toggleInfoVisibility()}
+                   isVisible={infoVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
+                <EditTask navigation={() => toggleInfoVisibility()} index={index} state={state} setState={setState} task={task}/>
+            </Modal>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -86,7 +102,11 @@ const styles = StyleSheet.create({
     complete: {
         fontSize: 14,
         color: 'grey'
-    }
+    },
+    modal: {
+        margin: 0,
+        justifyContent: 'flex-end',
+    },
 })
 
 export default Tasks;
