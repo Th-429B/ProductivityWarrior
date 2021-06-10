@@ -1,20 +1,49 @@
 import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 
-const settingsModal = ({navigation}) => {
+const settingsModal = ({navigation, toggleCompleted, completedVisibility, deleteAll}) => {
+
+    const showCompleted = () => {
+        if (completedVisibility) {
+            return (
+                <View style={styles.innerButton}>
+                    <Text>Hide Completed</Text>
+                    <Ionicons name="eye-off-outline" size={24} color="black" />
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.innerButton}>
+                    <Text>Show Completed</Text>
+                    <Ionicons name="eye-outline" size={24} color="black" />
+                </View>
+            )
+        }
+    }
+
     return(
         <View style={styles.inner}>
-            <TouchableOpacity style={styles.button}>
-                <Text>Show Completed</Text>
+            <TouchableOpacity style={styles.button} onPress={() => {toggleCompleted(); navigation()}}>
+                {showCompleted()}
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}>
-                <Text>Mark All as Completed</Text>
+                <View style={styles.innerButton}>
+                    <Text>Mark All as Completed</Text>
+                    <Ionicons name="checkmark-circle-outline" size={24} color="black" />
+                </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text>Delete All</Text>
+            <TouchableOpacity style={styles.button} onPress={() => {deleteAll(); navigation()}}>
+                <View style={styles.innerButton}>
+                    <Text style={{color: 'red'}}>Delete All</Text>
+                    <Ionicons name="trash-bin-outline" size={24} color="red" />
+                </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation()}>
-                <Text>Cancel</Text>
+                <View style={styles.innerButton}>
+                    <Text>Cancel</Text>
+                    <Ionicons name="close-circle-outline" size={24} color="black" />
+                </View>
             </TouchableOpacity>
         </View>
     )
@@ -32,10 +61,15 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: 'white',
         marginVertical: 7,
-        paddingHorizontal: 15,
-        paddingVertical: 15,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         borderRadius: 10,
         opacity: 1,
+    },
+    innerButton: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
     }
 })
 

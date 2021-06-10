@@ -16,11 +16,36 @@ import Settings from './settingsModal'
 function TodoListScreen() {
     const [taskList, setTaskList] = useState([])
     const [modalVisibility, setModalVisibility] = useState(false);
+    const [completedVisibility, setCompletedVisibility] = useState(false);
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
     const toggleModalVisibility = () => {
         setModalVisibility(!modalVisibility);
+    }
+
+    const toggleCompletedVisibility = () => {
+        setCompletedVisibility(!completedVisibility);
+    }
+
+    const showIncompleteTask = () => {
+        return(
+            taskList.filter((item) => item['completed'] === false).map((item, index) => {
+                return <Tasks task={item} state={taskList} setState={(newList) => setTaskList(newList)}
+                              index={taskList.indexOf(item)} key={index}/>})
+        )
+    }
+
+    const deleteAll = () => {
+        setTaskList([]);
+    }
+
+    const showCompletedTask = () => {
+        return(
+            taskList.filter((item) => item['completed'] === true).map((item, index) => {
+                return <Tasks task={item} state={taskList} setState={(newList) => setTaskList(newList)}
+                              index={taskList.indexOf(item)} key={index}/>})
+        )
     }
 
     return (
@@ -33,19 +58,16 @@ function TodoListScreen() {
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.tasks}>
-                    {taskList.filter((item) => item['completed'] === false).map((item, index) => {
-                        return <Tasks task={item} state={taskList} setState={(newList) => setTaskList(newList)}
-                                      index={taskList.indexOf(item)} key={index}/>})}
-                    {taskList.filter((item) => item['completed'] === true).map((item, index) => {
-                        return <Tasks task={item} state={taskList} setState={(newList) => setTaskList(newList)}
-                                      index={taskList.indexOf(item)} key={index}/>})}
+                    {showIncompleteTask()}
+                    {completedVisibility && showCompletedTask()}
                 </View>
             </View>
             <NewTask addTodos={(todo) => setTaskList([...taskList, todo])}/>
 
             <Modal onBackButtonPress={() => toggleModalVisibility()} onBackdropPress={() => toggleModalVisibility()}
                    isVisible={modalVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
-                <Settings navigation={toggleModalVisibility}/>
+                <Settings navigation={() => toggleModalVisibility()} toggleCompleted={() => toggleCompletedVisibility()}
+                          completedVisibility={completedVisibility} deleteAll={() => deleteAll()}/>
             </Modal>
         </SafeAreaView>
     );
