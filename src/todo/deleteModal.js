@@ -7,14 +7,14 @@ const deleteModal = ({navigation, deleteAll}) => {
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Are you sure you want to delete all tasks?</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => navigation()}>
-                <View style={styles.innerButton}>
-                    <Text>No</Text>
-                </View>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => {deleteAll(); navigation()}}>
                 <View style={styles.innerButton}>
-                    <Text style={{color: 'red'}}>Yes</Text>
+                    <Text style={{color: 'red'}}>Delete All</Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation()}>
+                <View style={styles.innerButton}>
+                    <Text>Cancel</Text>
                 </View>
             </TouchableOpacity>
         </View>

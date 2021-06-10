@@ -82,6 +82,12 @@ function TodoListScreen() {
         }
     }
 
+    const markAllComplete = () => {
+        const newToDos = [...taskList];
+        newToDos.map((item) => item['completed'] = true);
+        setTaskList(newToDos);
+    }
+
     return (
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style = {styles.container}>
@@ -103,7 +109,7 @@ function TodoListScreen() {
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
                    isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
                 <Settings navigation={() => toggleSettingVisibility()} toggleCompleted={() => toggleCompletedVisibility()}
-                          completedVisibility={completedVisibility} toggleDelete={() => toggleToShowDelete()}/>
+                          completedVisibility={completedVisibility} toggleDelete={() => toggleToShowDelete()} markAllComplete={() => markAllComplete()}/>
             </Modal>
 
             {/* Delete all confirmation modal */}
