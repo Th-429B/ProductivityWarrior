@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
-const settingsModal = ({navigation, toggleCompleted, completedVisibility, deleteAll}) => {
+const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggleDelete}) => {
 
     const showCompleted = () => {
         if (completedVisibility) {
@@ -33,7 +33,7 @@ const settingsModal = ({navigation, toggleCompleted, completedVisibility, delete
                     <Ionicons name="checkmark-circle-outline" size={24} color="black" />
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {deleteAll(); navigation()}}>
+            <TouchableOpacity style={styles.button} onPress={() => {navigation(); toggleDelete()}}>
                 <View style={styles.innerButton}>
                     <Text style={{color: 'red'}}>Delete All</Text>
                     <Ionicons name="trash-bin-outline" size={24} color="red" />
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-    }
+    },
 })
 
 export default settingsModal;

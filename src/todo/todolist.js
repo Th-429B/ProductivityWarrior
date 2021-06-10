@@ -12,20 +12,47 @@ import Modal from 'react-native-modal';
 import Tasks from './tasks';
 import NewTask from './newTask'
 import Settings from './settingsModal'
+import DeleteAll from "./deleteModal";
 
 function TodoListScreen() {
+    /* Stores all the tasks */
     const [taskList, setTaskList] = useState([])
-    const [modalVisibility, setModalVisibility] = useState(false);
+    /* Tracks if setting modal should be displayed */
+    const [settingVisibility, setSettingVisibility] = useState(false);
+    /* Tracks if completed tasks should be displayed */
     const [completedVisibility, setCompletedVisibility] = useState(false);
+    /* Tracks if delete all confirmation model should be displayed */
+    const [deleteVisibility, setDeleteVisibility] = useState(false);
+    /* Messenger state to call the delete all confirmation modal */
+    const [toShowDelete, setToShowDelete] = useState(false);
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
-    const toggleModalVisibility = () => {
-        setModalVisibility(!modalVisibility);
+    const toggleSettingVisibility = () => {
+        setSettingVisibility(!settingVisibility);
     }
 
     const toggleCompletedVisibility = () => {
         setCompletedVisibility(!completedVisibility);
+    }
+
+    const toggleDeleteVisibility = () => {
+        setDeleteVisibility(!deleteVisibility);
+    }
+
+    const toggleToShowDelete = () => {
+        setToShowDelete(!toShowDelete);
+    }
+
+    const showDelete = () => {
+        if (toShowDelete) {
+            toggleDeleteVisibility();
+            toggleToShowDelete();
+        }
+    }
+
+    const deleteAll = () => {
+        setTaskList([]);
     }
 
     const showIncompleteTask = () => {
@@ -36,10 +63,6 @@ function TodoListScreen() {
         )
     }
 
-    const deleteAll = () => {
-        setTaskList([]);
-    }
-
     const showCompletedTask = () => {
         return(
             taskList.filter((item) => item['completed'] === true).map((item, index) => {
@@ -48,26 +71,45 @@ function TodoListScreen() {
         )
     }
 
+    const placeHolderText = () => {
+        const hasIncompleteTask = taskList.filter((item) => item['completed'] === false).length
+        if (!taskList.length || !hasIncompleteTask) {
+            return(
+                <View style={styles.placeholder}>
+                    <Text style={{fontSize: 15,}}>You have no pending tasks</Text>
+                </View>
+            )
+        }
+    }
+
     return (
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style = {styles.container}>
                 <View style={styles.headerRow}>
                     <Text style = {styles.headerText}>Today's Tasks</Text>
-                    <TouchableOpacity onPress={() => toggleModalVisibility()}>
+                    <TouchableOpacity onPress={() => toggleSettingVisibility()}>
                         <Ionicons name="ios-settings-outline" size={28} color="black" />
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.tasks}>
+                    {placeHolderText()}
                     {showIncompleteTask()}
                     {completedVisibility && showCompletedTask()}
                 </View>
             </View>
             <NewTask addTodos={(todo) => setTaskList([...taskList, todo])}/>
 
-            <Modal onBackButtonPress={() => toggleModalVisibility()} onBackdropPress={() => toggleModalVisibility()}
-                   isVisible={modalVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
-                <Settings navigation={() => toggleModalVisibility()} toggleCompleted={() => toggleCompletedVisibility()}
-                          completedVisibility={completedVisibility} deleteAll={() => deleteAll()}/>
+            {/* Settings modal */}
+            <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
+                   isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
+                <Settings navigation={() => toggleSettingVisibility()} toggleCompleted={() => toggleCompletedVisibility()}
+                          completedVisibility={completedVisibility} toggleDelete={() => toggleToShowDelete()}/>
+            </Modal>
+
+            {/* Delete all confirmation modal */}
+            <Modal onBackButtonPress={() => toggleDeleteVisibility()} onBackdropPress={() => toggleDeleteVisibility()}
+                   isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
+                <DeleteAll navigation={() => toggleDeleteVisibility()} deleteAll={() => deleteAll()}/>
             </Modal>
         </SafeAreaView>
     );
@@ -98,6 +140,11 @@ const styles = StyleSheet.create({
         modal: {
             margin: 0,
             justifyContent: 'flex-end',
+        },
+        placeholder: {
+            marginBottom: 20,
+            alignItems: 'center'
+
         }
     }
 )
