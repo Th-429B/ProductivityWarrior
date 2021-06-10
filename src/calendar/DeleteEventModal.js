@@ -70,7 +70,7 @@ const DeleteEventModal = ({closeModal, name}) => {
             <View style={{alignSelf: "stretch", marginHorizontal: 32}}>
                 <Text style={styles.title}>Are you sure you want to delete the event </Text>
 
-                <TouchableOpacity style={styles.add} onPress={() => deleteEvent()}>
+                <TouchableOpacity style={styles.add} onPress={() => {deleteEvent(); closeModal();}}>
                     <Text style={{color: "white", fontWeight: 'bold', fontSize: 18}}>Yes!</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.add} onPress={() => {closeModal(); }}>
