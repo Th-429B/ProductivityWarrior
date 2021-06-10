@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
-const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggleDelete}) => {
+const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggleDelete, markAllComplete}) => {
 
     const showCompleted = () => {
         if (completedVisibility) {
@@ -27,7 +27,7 @@ const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggle
             <TouchableOpacity style={styles.button} onPress={() => {toggleCompleted(); navigation()}}>
                 {showCompleted()}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => {markAllComplete(); navigation()}}>
                 <View style={styles.innerButton}>
                     <Text>Mark All as Completed</Text>
                     <Ionicons name="checkmark-circle-outline" size={24} color="black" />
