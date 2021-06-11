@@ -11,18 +11,12 @@ import {
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
-const editTaskModal = ({navigation, index, setState, state, task}) => {
+const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [text, setText] = useState(task['text']);
 
-    const deleteTask = () => {
-        const newTodos = [...state];
-        newTodos.splice(index, 1);
-        setState(newTodos);
-    }
-
-    const editTask = () => {
+    const done = () => {
         if (!text) {
             Alert.alert('Task is empty!');
         } else if (text !== task['text'] && text) {
@@ -43,6 +37,14 @@ const editTaskModal = ({navigation, index, setState, state, task}) => {
         navigation();
     }
 
+    const editText = () => {
+        if (!task['completed']) {
+            return(
+                <TextInput value={text} style={styles.textInput} multiline={true} onChangeText={text => setText(text)} />
+            )
+        }
+    }
+
     return(
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style={styles.inner}>
@@ -54,15 +56,15 @@ const editTaskModal = ({navigation, index, setState, state, task}) => {
                         </View>
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Details</Text>
-                    <TouchableOpacity onPress={() => editTask() }>
+                    <TouchableOpacity onPress={() => done()}>
                         <View style={styles.innerButton}>
                             <Text style={{color: "#00adf5"}}>Done</Text>
                             <Ionicons name="checkmark" size={24} color="#00adf5" />
                         </View>
                     </TouchableOpacity>
                 </View>
-                <TextInput value={text} style={styles.textInput} multiline={true} onChangeText={text => setText(text)} />
-                <TouchableOpacity style={styles.button} onPress={() => {deleteTask(); navigation()}}>
+                {editText()}
+                <TouchableOpacity style={styles.button} onPress={() => {navigation(); deleteTask()}}>
                     <View style={styles.innerButton}>
                         <Text style={{color: 'red'}}>Delete</Text>
                     </View>

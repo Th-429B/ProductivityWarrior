@@ -115,7 +115,7 @@ function TodoListScreen() {
             {/* Delete all confirmation modal */}
             <Modal onBackButtonPress={() => toggleDeleteVisibility()} onBackdropPress={() => toggleDeleteVisibility()}
                    isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
-                <DeleteAll navigation={() => toggleDeleteVisibility()} deleteAll={() => deleteAll()}/>
+                <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteAll()} deleteAll={true}/>
             </Modal>
         </SafeAreaView>
     );

@@ -1,15 +1,15 @@
 import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 
-const deleteModal = ({navigation, deleteAll}) => {
+const deleteModal = ({navigation, deleteFunction, deleteAll}) => {
     return(
         <View style={styles.inner}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Are you sure you want to delete all tasks?</Text>
+                <Text style={styles.title}>{deleteAll ? 'Are you sure you want to delete all tasks?' : 'Are you sure you want to delete this task?'}</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => {deleteAll(); navigation()}}>
+            <TouchableOpacity style={styles.button} onPress={() => {deleteFunction(); navigation()}}>
                 <View style={styles.innerButton}>
-                    <Text style={{color: 'red'}}>Delete All</Text>
+                    <Text style={{color: 'red'}}>{deleteAll ? 'Delete All' : 'Delete'}</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation()}>
