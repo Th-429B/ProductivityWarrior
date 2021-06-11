@@ -10,7 +10,7 @@ const NewTask = ({addTodos}) => {
             const ID = uuid.v4();
             const newTodo = {
                 id: ID,
-                created: Date.now(),
+                created: new Date(),
                 text: task,
                 completed: false,
             }

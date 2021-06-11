@@ -6,12 +6,12 @@ import EditTask from './editTaskModal'
 import DeleteAll from "./deleteModal";
 
 const Tasks = ({task, state, setState, index}) => {
-    const [infoVisibility, setInfoVisibility] =useState(false);
+    const [editVisibility, setEditVisibility] =useState(false);
     const [deleteVisibility, setDeleteVisibility] = useState(false);
     const [toShowDelete, setToShowDelete] = useState(false);
 
-    const toggleInfoVisibility = () => {
-        setInfoVisibility(!infoVisibility);
+    const toggleEditVisibility = () => {
+        setEditVisibility(!editVisibility);
     }
 
     const toggleDeleteVisibility = () => {
@@ -62,7 +62,7 @@ const Tasks = ({task, state, setState, index}) => {
                     <View style={styles.textWrapper}>
                         <Text style={styles.text}>{task['text']}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => toggleInfoVisibility()}>
+                    <TouchableOpacity onPress={() => toggleEditVisibility()}>
                         <MaterialIcons name="info-outline" size={24} color={"#00adf5"}/>
                     </TouchableOpacity>
                 </View>
@@ -78,7 +78,7 @@ const Tasks = ({task, state, setState, index}) => {
                 <View style={styles.textWrapper}>
                     <Text style={styles.complete}>{task['text']}</Text>
                 </View>
-                <TouchableOpacity onPress={() => toggleInfoVisibility()}>
+                <TouchableOpacity onPress={() => toggleEditVisibility()}>
                     <MaterialIcons name="info-outline" size={24} color={'grey'} />
                 </TouchableOpacity>
             </View>
@@ -90,9 +90,9 @@ const Tasks = ({task, state, setState, index}) => {
             {task['completed'] === false ? incompleteView() : completeView()}
 
             {/* Info modal */}
-            <Modal onBackButtonPress={() => toggleInfoVisibility()} onBackdropPress={() => toggleInfoVisibility()}
-                   isVisible={infoVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
-                <EditTask navigation={() => toggleInfoVisibility()} index={index} state={state} setState={setState} task={task} deleteTask={() => toggleToShowDelete()}/>
+            <Modal onBackButtonPress={() => toggleEditVisibility()} onBackdropPress={() => toggleEditVisibility()}
+                   isVisible={editVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
+                <EditTask navigation={() => toggleEditVisibility()} index={index} state={state} setState={setState} task={task} deleteTask={() => toggleToShowDelete()}/>
             </Modal>
 
             {/* Delete confirmation modal */}

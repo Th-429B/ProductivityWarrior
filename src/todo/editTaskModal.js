@@ -45,6 +45,11 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
         }
     }
 
+    const parseDate = () => {
+        const dateObj = task['created'];
+        return dateObj.toLocaleString('en-GB', {dateStyle: 'medium', timeStyle: 'short', hour12: true});
+    }
+
     return(
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style={styles.inner}>
@@ -69,6 +74,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
                         <Text style={{color: 'red'}}>Delete</Text>
                     </View>
                 </TouchableOpacity>
+                <Text style={styles.footer}>Created on: {parseDate()}</Text>
             </View>
         </SafeAreaView>
     )
@@ -121,6 +127,10 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         marginVertical: 7,
+    },
+    footer: {
+        paddingTop: 10,
+        fontSize: 12,
     },
 })
 
