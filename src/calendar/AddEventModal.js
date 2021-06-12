@@ -9,22 +9,24 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import eventData from "./eventData";
 import {AntDesign} from "@expo/vector-icons";
+import {saveData} from "./eventData";
 
-let x;
-// function to check if the date already has an event.
-const findDate = (date) => {
-    for (x in eventData) {
-        if ( x === date) {
-            return true;
-        }
-    }
-    return false;
-}
+
 
 //passing the closeModal prop to AddEventModal
-const AddEventModal = ({closeModal}) => {
+const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
+
+// function to check if the date already has an event.
+    const findDate = (date) => {
+        let x;
+        for (x in eventItems) {
+            if (x === date) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     const [date, setDate] = useState();
     const [event, setEvent] = useState();
@@ -38,11 +40,16 @@ const AddEventModal = ({closeModal}) => {
 
     const addEvent = () => {
         if (findDate(date)) {
-            eventData[date].push({name: event})
+            eventItems[date].push({name: event})
         } else {
-            eventData[date] = [{name: event}]
+            eventItems[date] = [{name: event}]
         }
+        setEventItems(eventItems)
+        saveData(eventItems);
+        setDate(null);
+        setEvent(null);
         Keyboard.dismiss();
+
     }
 
     return (

@@ -9,55 +9,36 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import eventData from "./eventData";
+import {saveData} from "./eventData";
 import {AntDesign} from "@expo/vector-icons";
 
 //passing the closeModal prop to DeleteEventModal
-const DeleteEventModal = ({closeModal, name}) => {
-
-    // const deleteEvent = () => {
-    //
-    //     let date;
-    //     let index = -1;
-    //     let count;
-    //     for (date in eventData) {
-    //         count = 0;
-    //
-    //         eventData[date].forEach(function (event) {
-    //             if(event.name === name) {
-    //                 index = count;
-    //                 console.log(count)
-    //                 eventData[date].splice(count, 1)
-    //                 return;
-    //             }
-    //             console.log("hi")
-    //             count += 1;
-    //         })
-    //     }
-    // }
+const DeleteEventModal = ({closeModal, name, eventItems, setEventItems}) => {
 
     const deleteEvent = () => {
 
         let date;
         let removed = false;
 
-        for (date in eventData) {
+        for (date in eventItems) {
 
             if (removed) {
                 break;
             }
-            for (let i = 0, l = eventData[date].length; i < l; i++) {
-                if (eventData[date][i].name === name) {
+            for (let i = 0, l = eventItems[date].length; i < l; i++) {
+                if (eventItems[date][i].name === name) {
                     if (l === 1) {
-                        delete eventData[date]
+                        delete eventItems[date]
                     } else {
-                        eventData[date].splice(i, 1)
+                        eventItems[date].splice(i, 1)
                     }
                     removed = true;
                     break;
                 }
             }
         }
+        setEventItems(eventItems)
+        saveData(eventItems)
     }
 
     return (

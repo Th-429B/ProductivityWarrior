@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     TouchableOpacity,
@@ -11,16 +11,10 @@ import {
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
-import eventData from "./eventData";
+import eventData, {loadData} from "./eventData";
 import AddEventModal from "./AddEventModal";
 import {AntDesign} from "@expo/vector-icons";
 import DeleteEventModal from "./DeleteEventModal";
-
-const timeToString = (time) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-};
-
 
 // function to check if the date already has an event.
 const findDate = (date) => {
@@ -37,11 +31,16 @@ const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
 const CalendarScreen = () => {
 
+    useEffect(() => {
+        loadData((items) => setEventItems(items))
+    }, []);
+
     const [modalDeleteVisible, setModalDeleteVisibility] = useState(false);
     const [modalAddVisible, setModalAddVisibility] = useState(false);
 
-
     const [eventName, setEventName] = useState("test");
+
+    const [eventItems, setEventItems] = useState();
 
     const toggleModalAddVisibility = () => {
         setModalAddVisibility(!modalAddVisible);
@@ -54,6 +53,23 @@ const CalendarScreen = () => {
     const rowHasChanged = (r1, r2) => {
         return r1.name !== r2.name;
     }
+
+    const test = () => {
+        const date = "2021-05-28";
+        // eventItems[date].push({name: "this is a test"})
+        console.log(eventItems[date])
+        console.log(eventItems)
+    }
+
+// function to check if the date already has an event.
+    const findDate = () => {
+        let x;
+        for (x in eventItems) {
+            console.log(x)
+        }
+        return false;
+    }
+
 
     //render the time if time is added as another text prop.
     const renderItem = (item) => {
@@ -78,7 +94,6 @@ const CalendarScreen = () => {
                             <AntDesign name="close" size={18} color={'black'}/>
                         </TouchableOpacity>
                     </Card.Content>
-
                 </Card>
             </View>
         );
@@ -91,20 +106,22 @@ const CalendarScreen = () => {
                 visible={modalAddVisible}
                 onRequestClose={() => toggleModalAddVisibility()}
             >
-                <AddEventModal closeModal={() => toggleModalAddVisibility()}/>
+                <AddEventModal closeModal={() => toggleModalAddVisibility()}
+                eventItems={eventItems} setEventItems={(items) => setEventItems(items)} />
             </Modal>
             <Modal
                 animationType="slide"
                 visible={modalDeleteVisible}
                 onRequestClose={() => toggleModalDeleteVisibility()}
             >
-                <DeleteEventModal closeModal={() => toggleModalDeleteVisibility()} name={eventName}/>
+                <DeleteEventModal closeModal={() => toggleModalDeleteVisibility()} name={eventName}
+                eventItems={eventItems} setEventItems={(items) => setEventItems(items)}/>
             </Modal>
 
             <View style={{flex: 1}}>
                 <Agenda
                     selected={'2021-05-26'}
-                    items = {eventData}
+                    items = {eventItems}
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
                     // should fix the loading in ios
@@ -147,7 +164,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0.5,
         backgroundColor: '#FFF',
-        borderColor: 'blue',
+        // borderColor: 'blue',
     },
     addText: {
         fontSize:18
