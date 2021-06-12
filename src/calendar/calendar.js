@@ -6,26 +6,14 @@ import {
     Platform,
     StatusBar,
     StyleSheet,
-    TextInput,
-    Keyboard, Modal
+    Modal
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Text} from 'react-native-paper';
-import eventData, {loadData} from "./eventData";
+import {loadData} from "./eventData";
 import AddEventModal from "./AddEventModal";
 import {AntDesign} from "@expo/vector-icons";
 import DeleteEventModal from "./DeleteEventModal";
-
-// function to check if the date already has an event.
-const findDate = (date) => {
-    let x;
-    for (x in eventData) {
-        if ( x === date) {
-            return true;
-        }
-    }
-    return false;
-}
 
 const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 

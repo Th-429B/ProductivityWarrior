@@ -1,11 +1,9 @@
-import React, {useState} from "react"
+import React from "react"
 import {
-    Keyboard,
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     View
 } from "react-native";
@@ -49,12 +47,13 @@ const DeleteEventModal = ({closeModal, name, eventItems, setEventItems}) => {
                 <AntDesign name="close" size={24} color={'black'}/>
             </TouchableOpacity>
             <View style={{alignSelf: "stretch", marginHorizontal: 32}}>
-                <Text style={styles.title}>Are you sure you want to delete the event </Text>
+                <Text style={styles.header}>Are you sure you want to delete the event: </Text>
+                <Text style={styles.title}>"{name}"</Text>
 
                 <TouchableOpacity style={styles.add} onPress={() => {deleteEvent(); closeModal();}}>
                     <Text style={{color: "white", fontWeight: 'bold', fontSize: 18}}>Yes!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.add} onPress={() => {closeModal(); }}>
+                <TouchableOpacity style={styles.no} onPress={() => {closeModal(); }}>
                     <Text style={{color: "white", fontWeight: 'bold', fontSize: 18}}>No!</Text>
                 </TouchableOpacity>
             </View>
@@ -68,6 +67,14 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    header: {
+        fontSize: 28,
+        fontWeight: "bold",
+        color:'black',
+        alignSelf: "center",
+        marginBottom: 40
+
     },
     title: {
         fontSize: 28,
@@ -94,6 +101,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "blue"
+    },
+    no: {
+        marginTop: 24,
+        height: 50,
+        borderRadius: 6,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red"
     },
     closeButton: {
         position:"absolute",
