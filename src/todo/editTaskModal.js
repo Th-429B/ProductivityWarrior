@@ -49,7 +49,15 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
 
     const parseDate = () => {
         const dateObj = task['created'];
-        return dateObj.toLocaleString('en-GB', {dateStyle: 'medium', timeStyle: 'short', hour12: true});
+        const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const date = dateObj.getDate();
+        const month = monthList[dateObj.getMonth()];
+        const year = dateObj.getFullYear();
+        const hours = dateObj.getHours();
+        const hour = hours > 12 ? hours - 12 : hours;
+        const min = dateObj.getMinutes().toString().padStart(2,'0');
+        const suffix = hours >= 12 ? 'PM' : 'AM';
+        return `Created on: ${date} ${month} ${year} at ${hour}:${min} ${suffix}`;
     }
 
     return(
@@ -76,7 +84,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
                         <Text style={{color: 'red'}}>Delete</Text>
                     </View>
                 </TouchableOpacity>
-                <Text style={styles.footer}>Created on: {parseDate()}</Text>
+                <Text style={styles.footer}>{parseDate()}</Text>
             </View>
         </SafeAreaView>
     )
