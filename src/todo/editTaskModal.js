@@ -10,6 +10,7 @@ import {
     SafeAreaView, Keyboard, Alert
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
+import {saveData} from "./storage";
 
 const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) => {
 
@@ -24,6 +25,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
             task['text'] = text;
             newTodos[index] = task;
             setState(newTodos);
+            saveData(newTodos);
             Keyboard.dismiss();
             navigation();
         } else {

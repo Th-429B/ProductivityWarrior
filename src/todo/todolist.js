@@ -13,8 +13,14 @@ import Tasks from './tasks';
 import NewTask from './newTask'
 import Settings from './settingsModal'
 import DeleteAll from "./deleteModal";
+import {loadData, saveData} from "./storage";
 
 function TodoListScreen() {
+
+    useEffect(() => {
+        loadData((tasks) => setTaskList(tasks))
+    }, []);
+
     /* Stores all the tasks */
     const [taskList, setTaskList] = useState([])
     /* Tracks if setting modal should be displayed */
@@ -53,6 +59,7 @@ function TodoListScreen() {
 
     const deleteAll = () => {
         setTaskList([]);
+        saveData([]);
     }
 
     const showIncompleteTask = () => {
@@ -86,6 +93,7 @@ function TodoListScreen() {
         const newToDos = [...taskList];
         newToDos.map((item) => item['completed'] = true);
         setTaskList(newToDos);
+        saveData(newToDos);
     }
 
     return (
@@ -103,7 +111,7 @@ function TodoListScreen() {
                     {completedVisibility && showCompletedTask()}
                 </View>
             </View>
-            <NewTask addTodos={(todo) => setTaskList([...taskList, todo])}/>
+            <NewTask taskList={taskList} setTaskList={(newList) => setTaskList(newList)}/>
 
             {/* Settings modal */}
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}

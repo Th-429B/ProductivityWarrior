@@ -4,6 +4,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 import Modal from 'react-native-modal';
 import EditTask from './editTaskModal'
 import DeleteAll from "./deleteModal";
+import {saveData} from "./storage";
 
 const Tasks = ({task, state, setState, index}) => {
     const [editVisibility, setEditVisibility] =useState(false);
@@ -33,6 +34,7 @@ const Tasks = ({task, state, setState, index}) => {
         const newTodos = [...state];
         newTodos.splice(index, 1);
         setState(newTodos);
+        saveData(newTodos);
     }
 
     const setComplete = () => {
@@ -41,6 +43,7 @@ const Tasks = ({task, state, setState, index}) => {
             task['completed'] = true;
             newTodos[index] = task;
             setState(newTodos);
+            saveData(newTodos);
         }
     }
 
@@ -50,6 +53,7 @@ const Tasks = ({task, state, setState, index}) => {
             task['completed'] = false;
             newTodos[index] = task;
             setState(newTodos);
+            saveData(newTodos);
         }
     }
 

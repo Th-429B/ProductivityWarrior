@@ -1,9 +1,16 @@
 import React, {useState} from 'react'
 import {Keyboard, View, Text, StyleSheet, Platform, TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native";
 import uuid from 'react-native-uuid'
+import {saveData} from "./storage";
 
-const NewTask = ({addTodos}) => {
-    const [task, setTask] = useState();
+const NewTask = ({taskList, setTaskList}) => {
+    const [task, setTask] = useState(null);
+
+    const addTask = (newTask) => {
+        const newTodos = [...taskList, newTask];
+        setTaskList(newTodos);
+        saveData(newTodos)
+    }
 
     const handleNewTask = () => {
         if (task !== null) {
@@ -14,7 +21,7 @@ const NewTask = ({addTodos}) => {
                 text: task,
                 completed: false,
             }
-            addTodos(newTodo);
+            addTask(newTodo);
             setTask(null);
         }
         Keyboard.dismiss();
