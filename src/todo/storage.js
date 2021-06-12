@@ -7,6 +7,7 @@ export const loadData = async (setState) => {
     try {
         const tasks = await AsyncStorage.getItem(STORAGE_KEY);
         const parsedTasks = tasks ? JSON.parse(tasks) : [];
+        parsedTasks.map((item) => item['created'] = new Date(item['created']));
         setState(parsedTasks);
     } catch (error) {
         alert('Error: Unable to load tasks.');
