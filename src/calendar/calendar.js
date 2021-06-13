@@ -115,11 +115,8 @@ const CalendarScreen = () => {
                     // should fix the loading in ios
                     renderEmptyData={() => null}
                     renderEmptyDate={() => null}
-                    // onDayLongPress={(day) => setEvent(day, text)}
-                    // onDayPress={(day) => {findDate(day.dateString)}}
-                    //onDayLongPress={(day) => {console.log(day.dateString)}}
-                    // onDayLongPress={(day) => {setDate(day.dateString)}}
-
+                    pastScrollRange={12}
+                    futureScrollRange={12}
                 />
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {toggleModalAddVisibility()}}>
