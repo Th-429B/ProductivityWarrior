@@ -22,7 +22,7 @@ export const loadData = async (setState) => {
             '2021-05-27': [{name: 'React Native workshop'}]};
         setState(parsedItems);
     } catch (error) {
-        alert('Error: Unable to load tasks.');
+        alert('Error: Unable to load event.');
         console.log(error);
     }
 }
@@ -31,7 +31,7 @@ export const saveData = async (eventItems) => {
     try {
         AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(eventItems));
     } catch (error) {
-        alert('Error: Unable to save tasks.');
+        alert('Error: Unable to save event.');
         console.log(error);
     }
 }
