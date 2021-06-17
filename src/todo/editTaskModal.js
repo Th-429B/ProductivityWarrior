@@ -16,6 +16,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [text, setText] = useState(task['text']);
+    const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
     const done = () => {
         if (!text) {
@@ -49,7 +50,6 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
 
     const parseDate = () => {
         const dateObj = task['created'];
-        const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         const date = dateObj.getDate();
         const month = monthList[dateObj.getMonth()];
         const year = dateObj.getFullYear();

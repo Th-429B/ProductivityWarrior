@@ -3,7 +3,7 @@ import {AntDesign} from "@expo/vector-icons";
 import React from "react";
 import CalendarScreen from "./calendar/calendar"
 import TodoListScreen from "./todo/todolist"
-import TrackerScreen from "./tracker"
+import TrackerScreen from "./moduleTracker/tracker"
 import ProductivityScreen from "./productivity"
 
 const Tab = createBottomTabNavigator();
