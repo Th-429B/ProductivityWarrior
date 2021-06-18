@@ -4,8 +4,15 @@ import {MaterialIcons} from "@expo/vector-icons";
 import Modal from 'react-native-modal';
 import DeleteAll from "./deleteModal";
 import {saveModules} from "./storage";
+import AppLoading from 'expo-app-loading';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 const Module = ({task, state, setState, index}) => {
+
+    let [fontsLoaded, error] = useFonts({
+        'appleberry': require('../../assets/fonts/appleberry.ttf')
+    })
+
     const [editVisibility, setEditVisibility] =useState(false);
     const [deleteVisibility, setDeleteVisibility] = useState(false);
     const [toShowDelete, setToShowDelete] = useState(false);
@@ -88,6 +95,10 @@ const Module = ({task, state, setState, index}) => {
         )
     }
 
+    if (!fontsLoaded) {
+        return <AppLoading/>
+    }
+
     return (
         <View>
             {task['completed'] === false ? incompleteView() : completeView()}
@@ -129,6 +140,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 14,
+        fontFamily: 'appleberry'
     },
     complete: {
         fontSize: 14,
