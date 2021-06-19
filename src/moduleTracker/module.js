@@ -3,8 +3,8 @@ import {View, Text, StyleSheet} from "react-native";
 import Modal from 'react-native-modal';
 import DeleteAll from "./deleteModal";
 import {saveModules} from "./storage";
-import AppLoading from 'expo-app-loading';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+//import AppLoading from 'expo-app-loading';
+import { useFonts, } from '@expo-google-fonts/inter';
 
 const Module = ({task, state, setState, index}) => {
 
@@ -93,24 +93,20 @@ const Module = ({task, state, setState, index}) => {
         )
     }
 
-    if (!fontsLoaded) {
-        return <AppLoading/>
-    } else {
-        return (
-            <View>
-                {task['completed'] === false ? incompleteView() : completeView()}
+    return (
+        <View>
+            {task['completed'] === false ? incompleteView() : completeView()}
 
-                {/* Delete confirmation modal */}
-                <Modal onBackButtonPress={() => toggleDeleteVisibility()}
-                       onBackdropPress={() => toggleDeleteVisibility()}
-                       isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'}
-                       style={styles.modal}>
-                    <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteTask()}
-                               deleteAll={false}/>
-                </Modal>
-            </View>
-        )
-    }
+            {/* Delete confirmation modal */}
+            <Modal onBackButtonPress={() => toggleDeleteVisibility()}
+                   onBackdropPress={() => toggleDeleteVisibility()}
+                   isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'}
+                   style={styles.modal}>
+                <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteTask()}
+                           deleteAll={false}/>
+            </Modal>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
