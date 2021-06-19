@@ -3,8 +3,10 @@ import {View, Text, StyleSheet} from "react-native";
 import Modal from 'react-native-modal';
 import DeleteAll from "./deleteModal";
 import {saveModules} from "./storage";
-import AppLoading from 'expo-app-loading';
+//import AppLoading from 'expo-app-loading';
 import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from "expo-app-loading";
+
 
 const Module = ({mod, state, setState, index}) => {
 
@@ -44,7 +46,7 @@ const Module = ({mod, state, setState, index}) => {
     }
 
     if (!fontsLoaded) {
-        return <AppLoading/>
+        return <AppLoading />;
     } else {
         return (
             <View>
