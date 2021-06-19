@@ -37,8 +37,9 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
         if (!modCode) {
             Alert.alert('Module code is empty!');
         } else {
-            const module = moduleList.filter((mod) => mod['moduleCode'] === modCode);
-            const exist = modulesTaken.filter((mod) => mod['moduleCode'] === modCode);
+            const code = (modCode).toUpperCase()
+            const module = moduleList.filter((mod) => mod['moduleCode'] === code);
+            const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
             if (!module.length) {
                 Alert.alert('Module not found!');
             } else if (exist.length){
