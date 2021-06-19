@@ -102,6 +102,8 @@ const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
                     is24Hour={true}
                     display="default"
                     onChange={onChange}
+                    style={{width: 320, backgroundColor: "white"}}
+                    iOSDatePickerComponent={(props) => ( <RNDatePicker {...props} display={ Platform.OS === "ios" ? "spinner" : "default" } />)}
                 />
             )}
 

@@ -8,7 +8,7 @@ import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 const Module = ({task, state, setState, index}) => {
 
-    let [fontsLoaded, error] = useFonts({
+    let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
     })
 
@@ -95,19 +95,22 @@ const Module = ({task, state, setState, index}) => {
 
     if (!fontsLoaded) {
         return <AppLoading/>
+    } else {
+        return (
+            <View>
+                {task['completed'] === false ? incompleteView() : completeView()}
+
+                {/* Delete confirmation modal */}
+                <Modal onBackButtonPress={() => toggleDeleteVisibility()}
+                       onBackdropPress={() => toggleDeleteVisibility()}
+                       isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'}
+                       style={styles.modal}>
+                    <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteTask()}
+                               deleteAll={false}/>
+                </Modal>
+            </View>
+        )
     }
-
-    return (
-        <View>
-            {task['completed'] === false ? incompleteView() : completeView()}
-
-            {/* Delete confirmation modal */}
-            <Modal onBackButtonPress={() => toggleDeleteVisibility()} onBackdropPress={() => toggleDeleteVisibility()}
-                   isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} >
-                <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteTask()} deleteAll={false}/>
-            </Modal>
-        </View>
-    )
 }
 
 const styles = StyleSheet.create({
