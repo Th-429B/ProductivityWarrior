@@ -10,25 +10,27 @@ import {
 import {Ionicons} from "@expo/vector-icons";
 import Modal from 'react-native-modal';
 import Module from './module';
-import NewMod from './newMod'
-import Settings from './settingsModal'
+import NewMod from './newMod';
+import Settings from './settingsModal';
 import DeleteAll from "./deleteModal";
+import moduleData from "./moduleInfo.json";
 import {loadModules, saveModules} from "./storage";
 
 function TodoListScreen() {
 
     /*
     useEffect(() => {
-        loadData((tasks) => setTaskList(tasks))
+        loadData((tasks) => setModulesTaken(tasks))
     }, []);
     */
-
+    const [capTotal, setCapTotal] = useState(0);
+    const [totalMC, setTotalMC] = useState(0);
     /* Stores all the tasks */
-    const [taskList, setTaskList] = useState([])
+    const [modulesTaken, setModulesTaken] = useState([])
+    /* Tracks if add modal should be displayed */
+    const [addVisibility, setAddVisibility] = useState(false)
     /* Tracks if setting modal should be displayed */
     const [settingVisibility, setSettingVisibility] = useState(false);
-    /* Tracks if completed tasks should be displayed */
-    const [completedVisibility, setCompletedVisibility] = useState(false);
     /* Tracks if delete all confirmation model should be displayed */
     const [deleteVisibility, setDeleteVisibility] = useState(false);
     /* Messenger state to call the delete all confirmation modal */
@@ -36,12 +38,12 @@ function TodoListScreen() {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
-    const toggleSettingVisibility = () => {
-        setSettingVisibility(!settingVisibility);
+    const toggleAddVisibility = () => {
+        setAddVisibility(!addVisibility);
     }
 
-    const toggleCompletedVisibility = () => {
-        setCompletedVisibility(!completedVisibility);
+    const toggleSettingVisibility = () => {
+        setSettingVisibility(!settingVisibility);
     }
 
     const toggleDeleteVisibility = () => {
@@ -60,66 +62,65 @@ function TodoListScreen() {
     }
 
     const deleteAll = () => {
-        setTaskList([]);
+        setModulesTaken([]);
         //saveData([]);
     }
 
-    const showIncompleteTask = () => {
-        return(
-            taskList.filter((item) => item['completed'] === false).map((item, index) => {
-                return <Module task={item} state={taskList} setState={(newList) => setTaskList(newList)}
-                               index={taskList.indexOf(item)} key={index}/>})
-        )
-    }
-
-    const showCompletedTask = () => {
-        return(
-            taskList.filter((item) => item['completed'] === true).map((item, index) => {
-                return <Module task={item} state={taskList} setState={(newList) => setTaskList(newList)}
-                               index={taskList.indexOf(item)} key={index}/>})
-        )
-    }
-
     const placeHolderText = () => {
-        const hasIncompleteTask = taskList.filter((item) => item['completed'] === false).length
-        if (!taskList.length || !hasIncompleteTask) {
+        if (!modulesTaken.length) {
             return(
                 <View style={styles.placeholder}>
-                    <Text style={{fontSize: 15,}}>You have no pending tasks</Text>
+                    <Text style={{fontSize: 15,}}>You have no modules taken</Text>
                 </View>
             )
         }
     }
 
-    const markAllComplete = () => {
-        const newToDos = [...taskList];
-        newToDos.map((item) => item['completed'] = true);
-        setTaskList(newToDos);
-        //saveData(newToDos);
+    //*****
+    // EDIT THIS FUNCTION TO FIT THE NEW MODULE LOOK
+    const showModules = () => {
+        return(
+            modulesTaken.map((item, index) => {
+                return <Module task={item}
+                              index={modulesTaken.indexOf(item)} key={index}/>})
+        )
     }
+    //*****
 
     return (
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style = {styles.container}>
                 <View style={styles.headerRow}>
                     <Text style = {styles.headerText}>Module Tracker</Text>
+                    <Text>Current CAP: {totalMC === 0 ? 'NA' : (capTotal/totalMC).toFixed(2)}</Text>
                     <TouchableOpacity onPress={() => toggleSettingVisibility()}>
                         <Ionicons name="ios-settings-outline" size={28} color="black" />
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.tasks}>
                     {placeHolderText()}
-                    {showIncompleteTask()}
-                    {completedVisibility && showCompletedTask()}
+                    {showModules()}
                 </View>
             </View>
-            <NewMod taskList={taskList} setTaskList={(newList) => setTaskList(newList)}/>
+
+
+            <TouchableOpacity onPress={() => toggleAddVisibility()} style={styles.addButton}>
+                <View style={styles.addButtonInner}>
+                    <Text style={styles.addButtonText}>+</Text>
+                </View>
+            </TouchableOpacity>
+
+            {/* Add modal */}
+            <Modal onBackButtonPress={() => toggleAddVisibility()} onBackdropPress={() => toggleAddVisibility()}
+                   isVisible={addVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal}>
+                <NewMod navigation={() => toggleAddVisibility()} setModulesTaken={setModulesTaken} modulesTaken={modulesTaken}
+                        moduleList={moduleData} totalMC={totalMC} setTotalMC={setTotalMC} capTotal={capTotal} setCapTotal={setCapTotal}/>
+            </Modal>
 
             {/* Settings modal */}
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
                    isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
-                <Settings navigation={() => toggleSettingVisibility()} toggleCompleted={() => toggleCompletedVisibility()}
-                          completedVisibility={completedVisibility} toggleDelete={() => toggleToShowDelete()} markAllComplete={() => markAllComplete()}/>
+                <Settings navigation={() => toggleSettingVisibility()} toggleDelete={() => toggleToShowDelete()} />
             </Modal>
 
             {/* Delete all confirmation modal */}
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
         headerRow: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'baseline',
         },
         headerText: {
             fontSize: 24,
@@ -161,6 +162,28 @@ const styles = StyleSheet.create({
             marginBottom: 20,
             alignItems: 'center'
 
+        },
+        addButton: {
+            position: 'absolute',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            bottom: 10,
+            width: '100%',
+            paddingHorizontal: 20,
+        },
+        addButtonInner: {
+            height: 50,
+            width: 50,
+            backgroundColor: 'white',
+            borderRadius: 50,
+            borderColor: '#C0C0C0',
+            borderWidth: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        addButtonText: {
+            fontSize: 12,
         }
     }
 )

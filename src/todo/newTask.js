@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        bottom: 10,
+        bottom: 5,
         width: '100%',
     },
     input: {

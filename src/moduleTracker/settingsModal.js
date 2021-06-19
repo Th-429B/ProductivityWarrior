@@ -2,37 +2,10 @@ import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
-const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggleDelete, markAllComplete}) => {
-
-    const showCompleted = () => {
-        if (completedVisibility) {
-            return (
-                <View style={styles.innerButton}>
-                    <Text>Hide Completed</Text>
-                    <Ionicons name="eye-off-outline" size={24} color="black" />
-                </View>
-            )
-        } else {
-            return (
-                <View style={styles.innerButton}>
-                    <Text>Show Completed</Text>
-                    <Ionicons name="eye-outline" size={24} color="black" />
-                </View>
-            )
-        }
-    }
+const settingsModal = ({navigation, toggleDelete,}) => {
 
     return(
         <View style={styles.inner}>
-            <TouchableOpacity style={styles.button} onPress={() => {toggleCompleted(); navigation()}}>
-                {showCompleted()}
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {markAllComplete(); navigation()}}>
-                <View style={styles.innerButton}>
-                    <Text>Mark All as Completed</Text>
-                    <Ionicons name="checkmark-circle-outline" size={24} color="black" />
-                </View>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => {navigation(); toggleDelete()}}>
                 <View style={styles.innerButton}>
                     <Text style={{color: 'red'}}>Delete All</Text>
