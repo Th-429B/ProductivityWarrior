@@ -1,29 +1,41 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, LogBox} from "react-native";
 import Modal from 'react-native-modal';
-import DeleteAll from "./deleteModal";
 import {saveModules} from "./storage";
-//import AppLoading from 'expo-app-loading';
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from "expo-app-loading";
 
 
-const Module = ({mod, state, setState, index}) => {
+const Module = ({mod, index}) => {
 
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
     })
 
+    const gradeMap = {
+        'A+': 'S',
+        'A': 'S',
+        'A-': 'S',
+        'B+': 'S',
+        'B': 'S',
+        'B-': 'S',
+        'C+': 'S',
+        'C': 'S',
+        'D+': 'U',
+        'D': 'U',
+        'F': 'U',
+    }
+
     const completeView = () => {
         return (
-                <View style={[styles.item, {backgroundColor: '#c55b10'}]}>
+                <View style={styles.item}>
                     <View style={styles.modInfo}>
                         <Text style={styles.header}>{mod['moduleCode']}</Text>
                         <Text style={styles.text}>{mod['title']}</Text>
                         <Text style={styles.text}>{mod['moduleCredit']}MC</Text>
                     </View>
-                    <View>
-                        <Text style={styles.modGrade}>{mod['grade']}</Text>
+                    <View style={styles.gradeContainer}>
+                        <Text style={styles.modGrade}>{mod['SU'] ? gradeMap[mod['grade']] : mod['grade']}</Text>
                     </View>
                 </View>
         )
@@ -45,6 +57,8 @@ const Module = ({mod, state, setState, index}) => {
         )
     }
 
+    LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -59,12 +73,13 @@ const Module = ({mod, state, setState, index}) => {
 const styles = StyleSheet.create({
     item: {
         marginVertical: 7,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent:'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#c55b10',
     },
     button: {
         width: 21,
@@ -77,8 +92,6 @@ const styles = StyleSheet.create({
     modInfo: {
         flexDirection: 'column',
         flex: 1,
-        flexWrap: 'wrap',
-        marginHorizontal: 15,
         alignItems: 'flex-start',
     },
     modGrade: {
@@ -113,6 +126,11 @@ const styles = StyleSheet.create({
         color: 'white',
         marginVertical: 0,
         flex: 1
+    },
+    gradeContainer: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })
 

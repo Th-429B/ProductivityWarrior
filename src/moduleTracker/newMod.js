@@ -55,7 +55,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     department: module[0]['department'],
                     faculty: module[0]['faculty'],
                     grade: grade,
-                    SU: applySU,
+                    SU: grade==='CS' || grade==='CU' ? false : applySU,
                 }
 
                 const newMods = [...modulesTaken, newMod];

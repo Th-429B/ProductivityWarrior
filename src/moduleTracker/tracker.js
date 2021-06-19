@@ -5,7 +5,8 @@ import {
     Text,
     View,
     SafeAreaView,
-    StyleSheet, TouchableOpacity,
+    StyleSheet,
+    TouchableOpacity,
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import Modal from 'react-native-modal';
@@ -76,16 +77,12 @@ function TodoListScreen() {
         }
     }
 
-    //*****
-    // EDIT THIS FUNCTION TO FIT THE NEW MODULE LOOK
     const showModules = () => {
         return(
             modulesTaken.map((item, index) => {
-                return <Module mod={item}
-                              index={modulesTaken.indexOf(item)} key={index}/>})
+                return <Module mod={item} index={modulesTaken.indexOf(item)} key={index}/>})
         )
     }
-    //*****
 
     return (
         <SafeAreaView style = {styles.safe(paddingValue)}>
@@ -105,9 +102,7 @@ function TodoListScreen() {
 
 
             <TouchableOpacity onPress={() => toggleAddVisibility()} style={styles.addButton}>
-                <View style={styles.addButtonInner}>
-                    <Text style={styles.addButtonText}>+</Text>
-                </View>
+                <Text style={styles.addButtonText}>+</Text>
             </TouchableOpacity>
 
             {/* Add modal */}
@@ -164,23 +159,19 @@ const styles = StyleSheet.create({
 
         },
         addButton: {
-            position: 'absolute',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            bottom: 10,
-            width: '100%',
-            paddingHorizontal: 20,
-        },
-        addButtonInner: {
             height: 50,
             width: 50,
             backgroundColor: 'white',
             borderRadius: 50,
             borderColor: '#C0C0C0',
+            position: 'absolute',
             borderWidth: 1,
             justifyContent: 'center',
+            flexDirection: 'row',
             alignItems: 'center',
+            bottom: 10,
+            right: 10,
+            paddingHorizontal: 20,
         },
         addButtonText: {
             fontSize: 12,
