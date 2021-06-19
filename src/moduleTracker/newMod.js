@@ -17,7 +17,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [modCode, setModCode] = useState(null);
-    const [grade, setGrade] = useState(null);
+    const [grade, setGrade] = useState('A+');
     const [applySU, setApplySU] = useState(false);
     const gradeMap = {
         'A+': 5.0,
@@ -68,7 +68,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 }
 
                 setModCode(null);
-                setGrade(null);
+                setGrade('A+');
                 setApplySU(false);
 
                 Keyboard.dismiss();
