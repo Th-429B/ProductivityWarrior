@@ -4,74 +4,24 @@ import Modal from 'react-native-modal';
 import DeleteAll from "./deleteModal";
 import {saveModules} from "./storage";
 import AppLoading from 'expo-app-loading';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { useFonts } from '@expo-google-fonts/inter';
 
-const Module = ({task, state, setState, index}) => {
+const Module = ({mod, state, setState, index}) => {
 
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
     })
 
-    const [editVisibility, setEditVisibility] =useState(false);
-    const [deleteVisibility, setDeleteVisibility] = useState(false);
-    const [toShowDelete, setToShowDelete] = useState(false);
-
-    const toggleEditVisibility = () => {
-        setEditVisibility(!editVisibility);
-    }
-
-    const toggleDeleteVisibility = () => {
-        setDeleteVisibility(!deleteVisibility);
-    }
-
-    const toggleToShowDelete = () => {
-        setToShowDelete(!toShowDelete);
-    }
-
-    const showDelete = () => {
-        if (toShowDelete) {
-            toggleDeleteVisibility();
-            toggleToShowDelete();
-        }
-    }
-
-    const deleteTask = () => {
-        const newTodos = [...state];
-        newTodos.splice(index, 1);
-        setState(newTodos);
-        //saveData(newTodos);
-    }
-
-    const setComplete = () => {
-        if (task['completed'] === false) {
-            const newTodos = [...state];
-            task['completed'] = true;
-            newTodos[index] = task;
-            setState(newTodos);
-            //saveData(newTodos);
-        }
-    }
-
-    const setIncomplete = () => {
-        if (task['completed'] === true) {
-            const newTodos = [...state];
-            task['completed'] = false;
-            newTodos[index] = task;
-            setState(newTodos);
-            //saveData(newTodos);
-        }
-    }
-
     const completeView = () => {
         return (
                 <View style={[styles.item, {backgroundColor: '#c55b10'}]}>
                     <View style={styles.modInfo}>
-                        <Text style={styles.header}>CS2040s</Text>
-                        <Text style={styles.text}>Programming Methodology</Text>
-                        <Text style={styles.text}>4MC</Text>
+                        <Text style={styles.header}>{mod['moduleCode']}</Text>
+                        <Text style={styles.text}>{mod['title']}</Text>
+                        <Text style={styles.text}>{mod['moduleCredit']}MC</Text>
                     </View>
                     <View>
-                        <Text style={styles.modGrade}>A</Text>
+                        <Text style={styles.modGrade}>{mod['grade']}</Text>
                     </View>
                 </View>
         )
@@ -81,9 +31,9 @@ const Module = ({task, state, setState, index}) => {
         return (
             <View style={[styles.item, {backgroundColor: 'grey'}]}>
                 <View style={styles.modInfo}>
-                    <Text style={styles.header}>CS2040s</Text>
-                    <Text style={styles.text}>Programming Methodology</Text>
-                    <Text style={styles.text}>4MC</Text>
+                    <Text style={styles.header}>{mod['moduleCode']}</Text>
+                    <Text style={styles.text}>{mod['title']}</Text>
+                    <Text style={styles.text}>{mod['moduleCredit']}MC</Text>
                 </View>
                 <View styles={styles.incomplete}>
                     <Text style={styles.notTaken}>Not</Text>
@@ -98,16 +48,7 @@ const Module = ({task, state, setState, index}) => {
     } else {
         return (
             <View>
-                {task['completed'] === false ? incompleteView() : completeView()}
-
-                {/* Delete confirmation modal */}
-                <Modal onBackButtonPress={() => toggleDeleteVisibility()}
-                       onBackdropPress={() => toggleDeleteVisibility()}
-                       isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'}
-                       style={styles.modal}>
-                    <DeleteAll navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteTask()}
-                               deleteAll={false}/>
-                </Modal>
+                {completeView()}
             </View>
         )
     }

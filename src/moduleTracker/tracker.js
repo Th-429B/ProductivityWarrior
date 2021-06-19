@@ -81,7 +81,7 @@ function TodoListScreen() {
     const showModules = () => {
         return(
             modulesTaken.map((item, index) => {
-                return <Module task={item}
+                return <Module mod={item}
                               index={modulesTaken.indexOf(item)} key={index}/>})
         )
     }

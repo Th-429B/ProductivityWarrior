@@ -5,7 +5,7 @@ const deleteModal = ({navigation, deleteFunction, deleteAll}) => {
     return(
         <View style={styles.inner}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>{deleteAll ? 'Are you sure you want to delete all tasks?' : 'Are you sure you want to delete this task?'}</Text>
+                <Text style={styles.title}>{deleteAll ? 'Are you sure you want to delete all mods?' : 'Are you sure you want to delete this mod?'}</Text>
             </View>
             <TouchableOpacity style={styles.button} onPress={() => {deleteFunction(); navigation()}}>
                 <View style={styles.innerButton}>
