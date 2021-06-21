@@ -41,7 +41,10 @@ Calendar: Basic calendar that allows users to add events / delete events, and us
 
 ## Installation
 
-1. clone the github repository using 
+1. Clone the github repository using 
 ```
 git clone https://github.com/Th-429B/ProductivityWarrior.git
 ```
+2. Open it with your IDE of choice
+3. Run the command ``` expo start ``` in the terminal
+4. Scan the QR code with the expo app on your mobile device
