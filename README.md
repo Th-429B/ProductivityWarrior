@@ -38,3 +38,10 @@ Calendar: Basic calendar that allows users to add events / delete events, and us
 ## Technologies
 
 * React Native
+
+## Installation
+
+1. clone the github repository using 
+```
+git clone https://github.com/Th-429B/ProductivityWarrior.git
+```
