@@ -48,3 +48,4 @@ git clone https://github.com/Th-429B/ProductivityWarrior.git
 2. Open it with your IDE of choice
 3. Run the command ``` expo start ``` in the terminal
 4. Scan the QR code with the expo app on your mobile device
+5. Run the application
