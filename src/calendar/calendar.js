@@ -108,12 +108,12 @@ const CalendarScreen = () => {
 
             <View style={{flex: 1}}>
                 <Agenda
-                    selected={'2021-05-26'}
+                    // selected={'2021-05-26'}
                     items = {eventItems}
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
                     // should fix the loading in ios
-                    renderEmptyData={() => null}
+                    renderEmptyData={() => null}z
                     renderEmptyDate={() => null}
                     pastScrollRange={12}
                     futureScrollRange={12}

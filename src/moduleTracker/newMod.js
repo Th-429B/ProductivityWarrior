@@ -34,6 +34,10 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
         'F': 0.0,
     }
 
+    const suChecker = () => {
+        return ("attributes" in moduleData && "su" in moduleData["attributes"]);
+    }
+
     const done = () => {
         if (!textInput) {
             Alert.alert('Module code is empty!');
@@ -56,7 +60,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     department: moduleData['department'],
                     faculty: moduleData['faculty'],
                     grade: grade,
-                    SU: applySU,
+                    SU: suChecker() ? applySU : false,
                 }
 
                 const newMods = [...modulesTaken, newMod];
