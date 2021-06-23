@@ -16,9 +16,10 @@ import {Picker} from '@react-native-picker/picker';
 const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC, setTotalMC, capTotal, setCapTotal}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
-    const [modCode, setModCode] = useState(null);
+    const [textInput, setTextInput] = useState(null);
     const [grade, setGrade] = useState('A+');
     const [applySU, setApplySU] = useState(false);
+    const [moduleData, setModuleData] = useState(null);
     const gradeMap = {
         'A+': 5.0,
         'A': 5.0,
@@ -34,13 +35,13 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
     }
 
     const done = () => {
-        if (!modCode) {
+        if (!textInput) {
             Alert.alert('Module code is empty!');
         } else {
-            const code = (modCode).toUpperCase()
-            const module = moduleList.filter((mod) => mod['moduleCode'] === code);
+            const code = (textInput).toUpperCase()
+            //const module = moduleList.filter((mod) => mod['moduleCode'] === code);
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
-            if (!module.length) {
+            if (!moduleData) {
                 Alert.alert('Module not found!');
             } else if (exist.length){
                 Alert.alert('Module already exist!')
@@ -48,12 +49,12 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 Alert.alert('Please select your grade!');
             } else {
                 const newMod = {
-                    moduleCode: module[0]['moduleCode'],
-                    title: module[0]['title'],
-                    description: module[0]['description'],
-                    moduleCredit: module[0]['moduleCredit'],
-                    department: module[0]['department'],
-                    faculty: module[0]['faculty'],
+                    moduleCode: moduleData['moduleCode'],
+                    title: moduleData['title'],
+                    description: moduleData['description'],
+                    moduleCredit: moduleData['moduleCredit'],
+                    department: moduleData['department'],
+                    faculty: moduleData['faculty'],
                     grade: grade,
                     SU: grade==='CS' || grade==='CU' ? false : applySU,
                 }
@@ -63,14 +64,15 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 //saveModules(newMods)
 
                 if (!applySU && grade !== 'CS' && grade !== 'CU') {
-                    const intMC = parseInt(module[0]['moduleCredit'])
+                    const intMC = parseInt(moduleData['moduleCredit'])
                     setTotalMC(totalMC + intMC);
                     setCapTotal(capTotal + intMC * gradeMap[grade]);
                 }
 
-                setModCode(null);
+                setTextInput(null);
                 setGrade('A+');
                 setApplySU(false);
+                setModuleData(null);
 
                 Keyboard.dismiss();
                 navigation();
@@ -87,6 +89,40 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
         setApplySU(!applySU);
     }
 
+    const findModule = (modCode) => {
+        const code = (modCode).toUpperCase();
+        const module = moduleList.filter((mod) => mod['moduleCode'] === code);
+        if (module.length) {
+            setModuleData(module[0]);
+        } else {
+            setModuleData(null);
+        }
+    }
+
+    const canSU = () => {
+        try {
+            if ("attributes" in moduleData && "su" in moduleData["attributes"]) {
+                return (
+                    <TouchableOpacity style={styles.buttonSU} onPress={() => toggleApplySU()}>
+                        {showSU()}
+                    </TouchableOpacity>
+                )
+            } else {
+                return(
+                    <View style={styles.infoText}>
+                        <Text>SU option unavailable for this module</Text>
+                    </View>
+                )
+            }
+        } catch (err) {
+            return(
+                <View style={styles.infoText}>
+                    <Text>Module not found</Text>
+                </View>
+            )
+        }
+    }
+
     const showSU = () => {
         if (applySU) {
             return (
@@ -100,6 +136,24 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 <View style={styles.innerButton}>
                     <Text>Apply SU</Text>
                     <MaterialIcons name="radio-button-unchecked" size={24} color={"#00adf5"} />
+                </View>
+            )
+        }
+    }
+
+    const showModuleInfo = () => {
+        if (moduleData) {
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.subheadingText}>{moduleData["moduleCode"]}</Text>
+                    <Text style={styles.infoText}>{moduleData["title"]}</Text>
+
+                </View>
+            )
+        } else {
+            return(
+                <View style={styles.infoText}>
+                    <Text>Module not found</Text>
                 </View>
             )
         }
@@ -126,7 +180,8 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 <View style={styles.subheading}>
                     <Text style={styles.subheadingText}>Enter Module Code</Text>
                 </View>
-                <TextInput value={modCode} style={styles.textInput} onChangeText={modCode => setModCode(modCode)} placeholder={"Enter module code"} />
+                <TextInput value={textInput} style={styles.textInput} onChangeText={modCode => {setTextInput(modCode); findModule(modCode)}} placeholder={"Enter module code"} />
+                {showModuleInfo()}
                 <View style={styles.subheading}>
                     <Text style={styles.subheadingText}>Select Grade</Text>
                 </View>
@@ -153,9 +208,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     <Text style={styles.subheadingText}>SU Declaration</Text>
                 </View>
 
-                <TouchableOpacity style={styles.buttonSU} onPress={() => toggleApplySU()}>
-                    {showSU()}
-                </TouchableOpacity>
+                {canSU()}
 
             </View>
         </SafeAreaView>
@@ -229,6 +282,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         opacity: 1,
     },
+    infoText: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 5,
+    }
 })
 
 export default NewMod
