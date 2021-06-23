@@ -113,7 +113,7 @@ const CalendarScreen = () => {
                     renderItem={renderItem}
                     rowHasChanged={(r1, r2) => rowHasChanged(r1,r2)}
                     // should fix the loading in ios
-                    renderEmptyData={() => null}z
+                    renderEmptyData={() => null}
                     renderEmptyDate={() => null}
                     pastScrollRange={12}
                     futureScrollRange={12}
