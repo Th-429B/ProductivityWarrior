@@ -47,5 +47,11 @@ git clone https://github.com/Th-429B/ProductivityWarrior.git
 ```
 2. Open it with your IDE of choice
 3. Run the command ``` expo start ``` in the terminal
-4. Scan the QR code with the expo app on your mobile device
-5. Run the application
+4. Load the application on a smartphone or simulator
+* iPhone: Download Expo Go from the App Store. Open the iPhone camera and scan the QR code on the metro bundler localhost, and click on the link to load and open the app in Expo Go
+* Android: Download Expo Go from the Play Store. Open Expo Go and scan the QR code with the Expo Go app to load and open the app.
+* iOS Simulator (Mac Only): Download Xcode from the Mac App Store onto the Mac. On the metro bundler local host, click on 'Run on iOS simulator' and wait for both the iOS Simulator and app to load. For more details, refer to
+```https://docs.expo.io/workflow/ios-simulator/```
+* Android Emulator: Refer to the setup documentation]
+```https://docs.expo.io/workflow/android-studio-emulator/```
+7. Voila! The application is now running!
