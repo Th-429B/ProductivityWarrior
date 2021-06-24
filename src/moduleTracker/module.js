@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems: 'center',
         backgroundColor: '#c55b10',
+        marginHorizontal: 20,
     },
     button: {
         width: 21,
