@@ -41,17 +41,27 @@ Calendar: Basic calendar that allows users to add events / delete events, and us
 
 ## Installation
 
-1. Clone the github repository using 
+1. Install NodeJS on your computer
+* Mac: Open terminal and run
+```
+brew install node
+```
+* Windows: Download and install NodeJS LTS Client from ```https://nodejs.org/```
+2. Install the Expo Client by opening terminal and running
+```
+npm install expo-cli --global
+```
+3. Clone the github repository using 
 ```
 git clone https://github.com/Th-429B/ProductivityWarrior.git
 ```
-2. Open it with your IDE of choice
-3. Run the command ``` expo start ``` in the terminal
-4. Load the application on a smartphone or simulator
+4. Open it with your IDE of choice
+5. Run the command ``` expo start ``` in the terminal to load the metro bundler localhost
+6. Load and run the application on a smartphone or simulator
 * iPhone: Download Expo Go from the App Store. Open the iPhone camera and scan the QR code on the metro bundler localhost, and click on the link to load and open the app in Expo Go
 * Android: Download Expo Go from the Play Store. Open Expo Go and scan the QR code with the Expo Go app to load and open the app.
 * iOS Simulator (Mac Only): Download Xcode from the Mac App Store onto the Mac. On the metro bundler local host, click on 'Run on iOS simulator' and wait for both the iOS Simulator and app to load. For more details, refer to
 ```https://docs.expo.io/workflow/ios-simulator/```
-* Android Emulator: Refer to the setup documentation
+* Android Emulator: Refer to the setup documentation at
 ```https://docs.expo.io/workflow/android-studio-emulator/```
 7. Voila! The application is now running!
