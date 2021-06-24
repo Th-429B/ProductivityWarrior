@@ -5,7 +5,7 @@ import {
     Text,
     View,
     SafeAreaView,
-    StyleSheet, TouchableOpacity,
+    StyleSheet, TouchableOpacity, ScrollView,
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import Modal from 'react-native-modal';
@@ -107,8 +107,10 @@ function TodoListScreen() {
                 </View>
                 <View style = {styles.tasks}>
                     {placeHolderText()}
-                    {showIncompleteTask()}
-                    {completedVisibility && showCompletedTask()}
+                    <ScrollView style={styles.scroll}>
+                        {showIncompleteTask()}
+                        {completedVisibility && showCompletedTask()}
+                    </ScrollView>
                 </View>
             </View>
             <NewTask taskList={taskList} setTaskList={(newList) => setTaskList(newList)}/>
@@ -137,12 +139,12 @@ const styles = StyleSheet.create({
         }),
         container: {
             paddingTop: 20,
-            paddingHorizontal: 20,
         },
         headerRow: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingHorizontal: 20,
         },
         headerText: {
             fontSize: 24,
@@ -159,6 +161,9 @@ const styles = StyleSheet.create({
             marginBottom: 20,
             alignItems: 'center'
 
+        },
+        scroll: {
+            marginBottom: 115,
         }
     }
 )
