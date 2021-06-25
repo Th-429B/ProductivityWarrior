@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid'
 import {saveData} from "./storage";
 
 const NewTask = ({taskList, setTaskList}) => {
-    const [task, setTask] = useState(null);
+    const [task, setTask] = useState("");
 
     const addTask = (newTask) => {
         const newTodos = [...taskList, newTask];
@@ -13,7 +13,7 @@ const NewTask = ({taskList, setTaskList}) => {
     }
 
     const handleNewTask = () => {
-        if (task !== null) {
+        if (task !== "") {
             const ID = uuid.v4();
             const newTodo = {
                 id: ID,
@@ -22,7 +22,7 @@ const NewTask = ({taskList, setTaskList}) => {
                 completed: false,
             }
             addTask(newTodo);
-            setTask(null);
+            setTask("");
         }
         Keyboard.dismiss();
     }
