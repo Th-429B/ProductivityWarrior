@@ -3,8 +3,9 @@ import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import Preset from './presetModal';
+import moduleData from "./moduleInfo.json";
 
-const settingsModal = ({navigation, toggleDelete,}) => {
+const settingsModal = ({navigation, toggleDelete, modulesTaken, setModulesTaken, moduleList,}) => {
 
     /* Tracks if preset modal should be displayed */
     const [presetVisibility, setPresetVisibility] = useState(false)
@@ -39,7 +40,8 @@ const settingsModal = ({navigation, toggleDelete,}) => {
 
             <Modal onBackButtonPress={() => togglePresetVisibility()} onBackdropPress={() => togglePresetVisibility()}
                    isVisible={presetVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal}>
-                <Preset navigation={() => togglePresetVisibility()} />
+                <Preset navigation={() => togglePresetVisibility()}
+                        setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} moduleList={moduleList}  />
             </Modal>
 
         </View>

@@ -5,15 +5,45 @@ import {
     StyleSheet,
     TouchableOpacity,
     SafeAreaView,
-    TextInput,
     Platform,
     StatusBar,
-    Keyboard
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-import {Picker} from "@react-native-picker/picker";
 
-const presetModal = ({navigation}) => {
+// this list is not complete
+const cs = ["cs1101s", "cs1231s", "cs2030s", "cs2040s", "cs2100",
+"cs2103t", "cs2106", "cs3230"]
+
+
+const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) => {
+
+    const loadMods = () => {
+        for (let i = 0; i < cs.length; i++) {
+            const code = cs[i].toUpperCase()
+            const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
+
+            if (exist.length === 0) {
+                const module = moduleList.filter((mod) => mod['moduleCode'] === code);
+                const moduleData = module[0];
+                const newMod = {
+                    moduleCode: moduleData['moduleCode'],
+                    title: moduleData['title'],
+                    description: moduleData['description'],
+                    moduleCredit: moduleData['moduleCredit'],
+                    department: moduleData['department'],
+                    faculty: moduleData['faculty'],
+                    grade: "NA",
+                    SU: false,
+                }
+                const newMods = [...modulesTaken, newMod];
+                // somehow setModulesTaken does not work, it only works for the last iteration of the loop
+                setModulesTaken(newMods);
+
+            }
+            console.log(modulesTaken)
+        }
+        navigation()
+    }
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
@@ -30,7 +60,7 @@ const presetModal = ({navigation}) => {
                     <Text style={styles.headerText}>Load Preset Modules</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => {}}>
+                <TouchableOpacity style={styles.button} onPress={() => {loadMods()}}>
                     <View style={styles.innerButton}>
                         <Text >Computer Science</Text>
                     </View>

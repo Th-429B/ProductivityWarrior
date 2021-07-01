@@ -117,7 +117,8 @@ function TodoListScreen() {
             {/* Settings modal */}
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
                    isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
-                <Settings navigation={() => toggleSettingVisibility()} toggleDelete={() => toggleToShowDelete()} />
+                <Settings navigation={() => toggleSettingVisibility()} toggleDelete={() => toggleToShowDelete()}
+                          setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} moduleList={moduleData} />
             </Modal>
 
             {/* Delete all confirmation modal */}
