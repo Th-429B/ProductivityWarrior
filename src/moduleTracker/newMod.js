@@ -13,27 +13,13 @@ import {saveModules} from "./storage";
 import {Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {Picker} from '@react-native-picker/picker';
 
-const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC, setTotalMC, capTotal, setCapTotal}) => {
+const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC, setTotalMC, capTotal, setCapTotal, gradeMap}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [textInput, setTextInput] = useState(null);
     const [grade, setGrade] = useState('A+');
     const [applySU, setApplySU] = useState(false);
     const [moduleData, setModuleData] = useState(null);
-    const gradeMap = {
-        'A+': 5.0,
-        'A': 5.0,
-        'A-': 4.5,
-        'B+': 4.0,
-        'B': 3.5,
-        'B-': 3.0,
-        'C+': 2.5,
-        'C': 2.0,
-        'D+': 1.5,
-        'D': 1.0,
-        'F': 0.0,
-        'NA': 0,
-    }
 
     const done = () => {
         if (!textInput) {

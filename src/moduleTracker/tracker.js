@@ -39,6 +39,21 @@ function TodoListScreen() {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
+    const gradeMap = {
+        'A+': 5.0,
+        'A': 5.0,
+        'A-': 4.5,
+        'B+': 4.0,
+        'B': 3.5,
+        'B-': 3.0,
+        'C+': 2.5,
+        'C': 2.0,
+        'D+': 1.5,
+        'D': 1.0,
+        'F': 0.0,
+        'NA': 0,
+    }
+
     const toggleAddVisibility = () => {
         setAddVisibility(!addVisibility);
     }
@@ -64,6 +79,8 @@ function TodoListScreen() {
 
     const deleteAll = () => {
         setModulesTaken([]);
+        setCapTotal(0);
+        setTotalMC(0);
         //saveData([]);
     }
 
@@ -77,10 +94,15 @@ function TodoListScreen() {
         }
     }
 
+    const updateCAP = (intMC, grade) => {
+        setTotalMC(totalMC - intMC);
+        setCapTotal(capTotal - intMC * gradeMap[grade]);
+    }
+
     const showModules = () => {
         return(
             modulesTaken.map((item, index) => {
-                return <Module mod={item} index={modulesTaken.indexOf(item)} key={index}/>})
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
         )
     }
 
@@ -111,7 +133,7 @@ function TodoListScreen() {
             <Modal onBackButtonPress={() => toggleAddVisibility()} onBackdropPress={() => toggleAddVisibility()}
                    isVisible={addVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal}>
                 <NewMod navigation={() => toggleAddVisibility()} setModulesTaken={setModulesTaken} modulesTaken={modulesTaken}
-                        moduleList={moduleData} totalMC={totalMC} setTotalMC={setTotalMC} capTotal={capTotal} setCapTotal={setCapTotal}/>
+                        moduleList={moduleData} totalMC={totalMC} setTotalMC={setTotalMC} capTotal={capTotal} setCapTotal={setCapTotal} gradeMap={gradeMap}/>
             </Modal>
 
             {/* Settings modal */}

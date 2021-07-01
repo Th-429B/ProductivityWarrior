@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, LogBox} from "react-native";
+import {View, Text, StyleSheet, LogBox, TouchableOpacity} from "react-native";
 import Modal from 'react-native-modal';
 import {saveModules} from "./storage";
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from "expo-app-loading";
+import {Ionicons} from "@expo/vector-icons";
+import Delete from "./deleteModal"
 
-
-const Module = ({mod, index}) => {
+const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
 
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
@@ -27,8 +28,40 @@ const Module = ({mod, index}) => {
         'NA': 'Not Taken'
     }
 
+    const [infoVisibility, setInfoVisibility] =useState(false);
+    const [deleteVisibility, setDeleteVisibility] = useState(false);
+    const [toShowDelete, setToShowDelete] = useState(false);
+
+    const toggleInfoVisibility = () => {
+        setInfoVisibility(!infoVisibility);
+    }
+
+    const toggleDeleteVisibility = () => {
+        setDeleteVisibility(!deleteVisibility);
+    }
+
+    const toggleToShowDelete = () => {
+        setToShowDelete(!toShowDelete);
+    }
+
+    const showDelete = () => {
+        if (toShowDelete) {
+            toggleDeleteVisibility();
+            toggleToShowDelete();
+        }
+    }
+
+    const deleteMod = () => {
+        updateCAP(mod['moduleCredit'], mod['grade']);
+        const newMods = [...modulesTaken];
+        newMods.splice(index, 1);
+        setModulesTaken(newMods);
+        //saveData(newTodos);
+    }
+
     const completeView = () => {
         return (
+            <TouchableOpacity onPress={() => toggleInfoVisibility()}>
                 <View style={styles.item}>
                     <View style={styles.modInfo}>
                         <Text style={styles.header}>{mod['moduleCode']}</Text>
@@ -39,6 +72,7 @@ const Module = ({mod, index}) => {
                         <Text style={styles.modGrade}>{mod['SU'] ? gradeMap[mod['grade']] : mod['grade']}</Text>
                     </View>
                 </View>
+            </TouchableOpacity>
         )
     }
 
@@ -68,6 +102,28 @@ const Module = ({mod, index}) => {
         return (
             <View>
                 {mod['grade'] === "NA" ? incompleteView(): completeView()}
+
+                {/* Information Modal */}
+                <Modal onBackButtonPress={() => toggleInfoVisibility()} onBackdropPress={() => toggleInfoVisibility()}
+                       isVisible={infoVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={showDelete}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.infoHeader}>
+                            <Text style={styles.infoHeaderText}>{mod['moduleCode']}</Text>
+                            <TouchableOpacity onPress={() => {toggleInfoVisibility(); toggleToShowDelete()}}>
+                                <Ionicons name="trash-bin-outline" size={24} color="red" />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.textWrapper}>
+                            <Text style={styles.infoText}>{mod['description']}</Text>
+                        </View>
+                    </View>
+                </Modal>
+
+                {/* Delete confirmation modal */}
+                <Modal onBackButtonPress={() => toggleDeleteVisibility()} onBackdropPress={() => toggleDeleteVisibility()}
+                       isVisible={deleteVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.deleteModal}>
+                    <Delete navigation={() => toggleDeleteVisibility()} deleteFunction={() => deleteMod()} deleteAll={false}/>
+                </Modal>
             </View>
         )
     }
@@ -114,8 +170,29 @@ const styles = StyleSheet.create({
         fontFamily: 'appleberry'
     },
     modal: {
-        margin: 0,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        marginVertical: 7,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10,
+        opacity: 1,
+    },
+    infoHeader: {
+      flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    infoHeaderText: {
+        fontSize: 25,
+        fontFamily: 'appleberry',
+        paddingVertical: 10,
+    },
+    infoText: {
+        textAlign: 'justify',
     },
     incomplete: {
         flexDirection: 'column',
@@ -135,7 +212,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    deleteModal: {
+        margin: 0,
+        justifyContent: 'flex-end',
+    },
 })
 
 export default Module;
