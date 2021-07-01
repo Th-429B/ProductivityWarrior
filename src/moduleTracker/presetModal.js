@@ -18,6 +18,7 @@ const cs = ["cs1101s", "cs1231s", "cs2030s", "cs2040s", "cs2100",
 const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) => {
 
     const loadMods = () => {
+        const modulesTest = [];
         for (let i = 0; i < cs.length; i++) {
             const code = cs[i].toUpperCase()
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
@@ -35,13 +36,11 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                     grade: "NA",
                     SU: false,
                 }
-                const newMods = [...modulesTaken, newMod];
-                // somehow setModulesTaken does not work, it only works for the last iteration of the loop
-                setModulesTaken(newMods);
-
+                modulesTest.push(newMod);
             }
-            console.log(modulesTaken)
         }
+        const temp = [...modulesTaken, ...modulesTest]
+        setModulesTaken(temp)
         navigation()
     }
 
