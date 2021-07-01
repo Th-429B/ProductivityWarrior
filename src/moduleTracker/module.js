@@ -24,6 +24,7 @@ const Module = ({mod, index}) => {
         'D+': 'U',
         'D': 'U',
         'F': 'U',
+        'NA': 'Not Taken'
     }
 
     const completeView = () => {
@@ -57,6 +58,8 @@ const Module = ({mod, index}) => {
         )
     }
 
+
+
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
 
     if (!fontsLoaded) {
@@ -64,7 +67,7 @@ const Module = ({mod, index}) => {
     } else {
         return (
             <View>
-                {completeView()}
+                {mod['grade'] === "NA" ? incompleteView(): completeView()}
             </View>
         )
     }

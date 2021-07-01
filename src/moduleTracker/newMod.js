@@ -32,6 +32,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
         'D+': 1.5,
         'D': 1.0,
         'F': 0.0,
+        'NA': 0,
     }
 
     const done = () => {
@@ -204,6 +205,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     <Picker.Item label="F" value="F" />
                     <Picker.Item label="CS" value="CS" />
                     <Picker.Item label="CU" value="CU" />
+                    <Picker.Item label="NA" value="NA" />
                 </Picker>
                 <View style={styles.subheading}>
                     <Text style={styles.subheadingText}>SU Declaration</Text>
