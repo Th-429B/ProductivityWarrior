@@ -10,33 +10,36 @@ import {
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
-// this list is not complete
+// MA1101r is changed to MA2001 need to update module information
 const cs = ["cs1101s", "cs1231s", "cs2030s", "cs2040s", "cs2100",
-"cs2103t", "cs2106", "cs3230"]
-
+"cs2103t", "cs2106", "cs3230", "is1103", "CS2101", "ES2660" , "MA1521" , "ma1101r" , "ST2334"]
 
 const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) => {
 
-    const loadMods = () => {
+    const loadMods = (arr) => {
         const modulesTest = [];
-        for (let i = 0; i < cs.length; i++) {
-            const code = cs[i].toUpperCase()
+        for (let i = 0; i < arr.length; i++) {
+            const code = arr[i].toUpperCase()
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
 
             if (exist.length === 0) {
-                const module = moduleList.filter((mod) => mod['moduleCode'] === code);
-                const moduleData = module[0];
-                const newMod = {
-                    moduleCode: moduleData['moduleCode'],
-                    title: moduleData['title'],
-                    description: moduleData['description'],
-                    moduleCredit: moduleData['moduleCredit'],
-                    department: moduleData['department'],
-                    faculty: moduleData['faculty'],
-                    grade: "NA",
-                    SU: false,
+                try {
+                    const module = moduleList.filter((mod) => mod['moduleCode'] === code);
+                    const moduleData = module[0];
+                    const newMod = {
+                        moduleCode: moduleData['moduleCode'],
+                        title: moduleData['title'],
+                        description: moduleData['description'],
+                        moduleCredit: moduleData['moduleCredit'],
+                        department: moduleData['department'],
+                        faculty: moduleData['faculty'],
+                        grade: "NA",
+                        SU: false,
+                    }
+                    modulesTest.push(newMod);
+                } catch (e) {
+                    alert("invalid module code " + code)
                 }
-                modulesTest.push(newMod);
             }
         }
         const temp = [...modulesTaken, ...modulesTest]
@@ -59,7 +62,7 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                     <Text style={styles.headerText}>Load Preset Modules</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => {loadMods()}}>
+                <TouchableOpacity style={styles.button} onPress={() => {loadMods(cs)}}>
                     <View style={styles.innerButton}>
                         <Text >Computer Science</Text>
                     </View>
