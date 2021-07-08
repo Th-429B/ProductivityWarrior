@@ -4,7 +4,7 @@ import React from "react";
 import CalendarScreen from "./calendar/calendar"
 import TodoListScreen from "./todo/todolist"
 import TrackerScreen from "./moduleTracker/tracker"
-import ProductivityScreen from "./productivity"
+import ProductivityScreen from "./antidistraction/productivity"
 
 const Tab = createBottomTabNavigator();
 
