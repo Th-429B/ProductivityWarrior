@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Text, View, StyleSheet, TouchableOpacity, LogBox, TextInput, Keyboard} from "react-native";
-import AppLoading from "expo-app-loading";
+import * as Brightness from 'expo-brightness';
+
 
 
 function ProductivityScreen() {
@@ -9,15 +10,45 @@ function ProductivityScreen() {
     const [seconds, setSeconds] = useState(10);
     const [timerOn, setTimerOn] = useState(false);
     const [time, setTime] = useState(10);
+    const [bright, setBright] = useState();
 
     useEffect(() => {
         if (seconds > 0 && timerOn) {
             setTimeout(() => setSeconds(seconds - 1), 1000);
         }
         if (seconds === 0) {
+            Brightness.setBrightnessAsync(0.5)
             alert("done")
         }
     }, [seconds, timerOn]);
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Brightness.requestPermissionsAsync();
+            if (status === 'granted') {
+                console.log("Permission granted")
+                const {brightness} = await Brightness.getBrightnessAsync();
+                if (brightness <= 1) {
+                    setBright(brightness)
+                    console.log(bright)
+                }
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const {brightness} = await Brightness.getBrightnessAsync();
+            console.log(brightness)
+            // this is an attempt to get the original screen brightness
+            if (brightness <= 1) {
+                console.log("Brightness obtained")
+                setBright(brightness)
+                console.log(bright)
+            }
+
+        })();
+    }, [bright]);
 
     const reset = () => {
         setSeconds(10);
@@ -38,18 +69,22 @@ function ProductivityScreen() {
     }
 
     const startTime = () => {
-        if (!timerOn) {
-            if (time == null) {
+
+        if (!timerOn) {  // start the timer
+            if (time == null) {  // check if start or pause [pause]
                 setTimerOn(!timerOn);
-            } else {
+                Brightness.setBrightnessAsync(0)
+            } else {  // [start]
                 setTimerOn(!timerOn);
                 setSeconds(time);
                 setTime(null);
                 Keyboard.dismiss();
+                Brightness.setBrightnessAsync(0)
             }
 
-        } else {
+        } else {  // pause the timer
             setTimerOn(!timerOn);
+            Brightness.setBrightnessAsync(0.5)
         }
 
     }
