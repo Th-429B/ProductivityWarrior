@@ -30,26 +30,32 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
             if (!moduleData) {
                 Alert.alert('Module not found!');
-            } else if (exist.length){
+            } else if (exist.length && exist[0]['grade'] !== 'NA'){
                 Alert.alert('Module already exist!')
             } else if (!grade) {
                 Alert.alert('Please select your grade!');
             } else {
-                const newMod = {
-                    moduleCode: moduleData['moduleCode'],
-                    title: moduleData['title'],
-                    description: moduleData['description'],
-                    moduleCredit: moduleData['moduleCredit'],
-                    department: moduleData['department'],
-                    faculty: moduleData['faculty'],
-                    grade: grade,
-                    SU: applySU,
+                if (exist.length && exist[0]['grade'] === 'NA') {
+                    const module = exist[0];
+                    module['grade'] = grade;
+                    module['SU'] = applySU;
+                    setModulesTaken(modulesTaken)
+                } else {
+                    const newMod = {
+                        moduleCode: moduleData['moduleCode'],
+                        title: moduleData['title'],
+                        description: moduleData['description'],
+                        moduleCredit: moduleData['moduleCredit'],
+                        department: moduleData['department'],
+                        faculty: moduleData['faculty'],
+                        grade: grade,
+                        SU: applySU,
+                    }
+
+                    const newMods = [...modulesTaken, newMod];
+                    setModulesTaken(newMods);
+                    //saveModules(newMods)
                 }
-
-                const newMods = [...modulesTaken, newMod];
-                setModulesTaken(newMods);
-                //saveModules(newMods)
-
                 if (!applySU && grade !== 'CS' && grade !== 'CU') {
                     const intMC = parseInt(moduleData['moduleCredit'])
                     setTotalMC(totalMC + intMC);
