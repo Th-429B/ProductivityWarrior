@@ -101,7 +101,7 @@ function TodoListScreen() {
 
     const showTakenModules = () => {
         return(
-            modulesTaken.filter(item => item['grade'] !== 'NA').map((item, index) => {
+            modulesTaken.filter(item => item['grade'] !== 'NA' && !item['moduleCode'].startsWith('GE')).map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
         )
     }
@@ -109,6 +109,13 @@ function TodoListScreen() {
     const showPresetModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA').map((item, index) => {
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
+        )
+    }
+
+    const showGEModules = () => {
+        return(
+            modulesTaken.filter(item => item['moduleCode'].startsWith('GE')).map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
         )
     }
@@ -126,6 +133,9 @@ function TodoListScreen() {
                 <View style = {styles.tasks}>
                     {placeHolderText()}
                     <ScrollView style={styles.scroll}>
+                        <Text style={styles.subheading}>General Education Modules</Text>
+                        {showGEModules()}
+                        <Text style={styles.subheading}>Core Modules</Text>
                         {showTakenModules()}
                         {showPresetModules()}
                     </ScrollView>
@@ -211,6 +221,12 @@ const styles = StyleSheet.create({
         },
         scroll: {
             marginBottom: 65,
+        },
+        subheading: {
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            fontWeight: 'bold',
+            fontSize: 18,
         }
     }
 )

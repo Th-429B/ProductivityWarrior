@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import Preset from './presetModal';
-import moduleData from "./moduleInfo.json";
 
 const settingsModal = ({navigation, toggleDelete, modulesTaken, setModulesTaken, moduleList,}) => {
 
@@ -39,7 +38,7 @@ const settingsModal = ({navigation, toggleDelete, modulesTaken, setModulesTaken,
             </TouchableOpacity>
 
             <Modal onBackButtonPress={() => togglePresetVisibility()} onBackdropPress={() => togglePresetVisibility()}
-                   isVisible={presetVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal}>
+                   isVisible={presetVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={navigation}>
                 <Preset navigation={() => togglePresetVisibility()}
                         setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} moduleList={moduleList}  />
             </Modal>
