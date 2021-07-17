@@ -99,9 +99,16 @@ function TodoListScreen() {
         setCapTotal(capTotal - intMC * gradeMap[grade]);
     }
 
-    const showModules = () => {
+    const showTakenModules = () => {
         return(
-            modulesTaken.map((item, index) => {
+            modulesTaken.filter(item => item['grade'] !== 'NA').map((item, index) => {
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
+        )
+    }
+
+    const showPresetModules = () => {
+        return(
+            modulesTaken.filter(item => item['grade'] === 'NA').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
         )
     }
@@ -119,7 +126,8 @@ function TodoListScreen() {
                 <View style = {styles.tasks}>
                     {placeHolderText()}
                     <ScrollView style={styles.scroll}>
-                        {showModules()}
+                        {showTakenModules()}
+                        {showPresetModules()}
                     </ScrollView>
                 </View>
             </View>
