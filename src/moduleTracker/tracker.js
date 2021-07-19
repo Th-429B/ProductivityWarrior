@@ -26,7 +26,7 @@ function TodoListScreen() {
     */
     const [capTotal, setCapTotal] = useState(0);
     const [totalMC, setTotalMC] = useState(0);
-    /* Stores all the tasks */
+    /* Stores all the modules taken */
     const [modulesTaken, setModulesTaken] = useState([])
     /* Tracks if add modal should be displayed */
     const [addVisibility, setAddVisibility] = useState(false)
@@ -94,29 +94,56 @@ function TodoListScreen() {
         }
     }
 
+    // updates CAP when a module is deleted
     const updateCAP = (intMC, grade) => {
         setTotalMC(totalMC - intMC);
-        setCapTotal(capTotal - intMC * gradeMap[grade]);
+        setCapTotal(capTotal - (intMC * gradeMap[grade]));
+    }
+
+    // updates CAP when a module is edited
+    const editCAP = (intMC, grade, newGrade) => {
+        updateCAP(intMC, grade)
+        const mc = totalMC * 1 + intMC * 1;
+        const cap = capTotal + (intMC * gradeMap[newGrade]);
+        setTotalMC(mc);
+        setCapTotal(cap);
+        console.log(totalMC)
+        console.log(capTotal)
+    }
+
+    const refreshCAP = () => {
+        let mc = 0;
+        let cap = 0
+        for (let i = 0; i < modulesTaken.length; i++) {
+            mc += parseInt(modulesTaken[i].moduleCredit)
+            cap += parseInt(gradeMap[modulesTaken[i].grade]) * parseInt(modulesTaken[i].moduleCredit)
+        }
+
+        setTotalMC(mc)
+        setCapTotal(cap)
     }
 
     const showTakenModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && !item['moduleCode'].startsWith('GE')).map((item, index) => {
-                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
         )
     }
 
     const showPresetModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA').map((item, index) => {
-                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
         )
     }
 
     const showGEModules = () => {
         return(
             modulesTaken.filter(item => item['moduleCode'].startsWith('GE')).map((item, index) => {
-                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken} setModulesTaken={setModulesTaken} updateCAP={updateCAP} key={index}/>})
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
         )
     }
 

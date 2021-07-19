@@ -6,8 +6,9 @@ import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from "expo-app-loading";
 import {Ionicons} from "@expo/vector-icons";
 import Delete from "./deleteModal"
+import Edit from "./editModal";
 
-const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
+const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, index}) => {
 
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
@@ -31,6 +32,7 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
     const [infoVisibility, setInfoVisibility] =useState(false);
     const [deleteVisibility, setDeleteVisibility] = useState(false);
     const [toShowDelete, setToShowDelete] = useState(false);
+    const [editVisibility, setEditVisibility] =useState(false);
 
     const toggleInfoVisibility = () => {
         setInfoVisibility(!infoVisibility);
@@ -42,6 +44,10 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
 
     const toggleToShowDelete = () => {
         setToShowDelete(!toShowDelete);
+    }
+
+    const toggleEditVisibility = () => {
+        setEditVisibility(!editVisibility);
     }
 
     const showDelete = () => {
@@ -57,6 +63,20 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
         newMods.splice(index, 1);
         setModulesTaken(newMods);
         //saveData(newTodos);
+    }
+
+    const changeGrade = () => {
+        const temp = modulesTaken;
+
+        for (let i = 0; i < temp.length; i++) {
+            if (temp[i].moduleCode === mod['moduleCode']) {
+                temp[i].grade = 'D';
+                break;
+            }
+        }
+        // console.log(temp)
+        setModulesTaken(temp)
+        refreshCAP();
     }
 
     const completeView = () => {
@@ -109,6 +129,9 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.infoHeader}>
                             <Text style={styles.infoHeaderText}>{mod['moduleCode']}</Text>
+                            <TouchableOpacity onPress={() => {toggleEditVisibility()}}>
+                                <Ionicons name="create-outline" size={24} color="black" />
+                            </TouchableOpacity>
                             <TouchableOpacity onPress={() => {toggleInfoVisibility(); toggleToShowDelete()}}>
                                 <Ionicons name="trash-bin-outline" size={24} color="red" />
                             </TouchableOpacity>
@@ -117,6 +140,13 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, index}) => {
                             <Text style={styles.infoText}>{mod['description']}</Text>
                         </View>
                     </View>
+                </Modal>
+
+                {/* Edit modal */}
+                <Modal onBackButtonPress={() => toggleEditVisibility()} onBackdropPress={() => toggleEditVisibility()}
+                       isVisible={editVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.edit}>
+                    <Edit navigation={() => toggleEditVisibility()}
+                            setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} mod={mod} refreshCAP={refreshCAP}  />
                 </Modal>
 
                 {/* Delete confirmation modal */}
@@ -214,6 +244,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     deleteModal: {
+        margin: 0,
+        justifyContent: 'flex-end',
+    },
+    edit: {
         margin: 0,
         justifyContent: 'flex-end',
     },
