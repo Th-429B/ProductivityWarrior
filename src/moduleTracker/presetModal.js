@@ -36,6 +36,7 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                         faculty: moduleData['faculty'],
                         grade: "NA",
                         SU: false,
+                        type: "core"
                     }
                     modulesTest.push(newMod);
                     modsAdded += 1;
@@ -44,6 +45,7 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                     modsNotFound += 1;
                 }
             } else {
+                exist[0]['type'] = "core";
                 modsExist += 1;
             }
         }
