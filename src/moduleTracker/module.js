@@ -33,6 +33,7 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
     const [deleteVisibility, setDeleteVisibility] = useState(false);
     const [toShowDelete, setToShowDelete] = useState(false);
     const [editVisibility, setEditVisibility] =useState(false);
+    const [toShowEdit, setToShowEdit] = useState(false);
 
     const toggleInfoVisibility = () => {
         setInfoVisibility(!infoVisibility);
@@ -50,10 +51,17 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
         setEditVisibility(!editVisibility);
     }
 
-    const showDelete = () => {
+    const toggleToShowEdit = () => {
+        setToShowEdit(!toShowEdit);
+    }
+
+    const showAdditional = () => {
         if (toShowDelete) {
             toggleDeleteVisibility();
             toggleToShowDelete();
+        } else if (toShowEdit) {
+            toggleEditVisibility();
+            toggleToShowEdit();
         }
     }
 
@@ -125,16 +133,18 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
 
                 {/* Information Modal */}
                 <Modal onBackButtonPress={() => toggleInfoVisibility()} onBackdropPress={() => toggleInfoVisibility()}
-                       isVisible={infoVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={showDelete}>
+                       isVisible={infoVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={showAdditional}>
                     <View style={styles.modalContainer}>
                         <View style={styles.infoHeader}>
                             <Text style={styles.infoHeaderText}>{mod['moduleCode']}</Text>
-                            <TouchableOpacity onPress={() => {toggleEditVisibility()}}>
-                                <Ionicons name="create-outline" size={24} color="black" />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {toggleInfoVisibility(); toggleToShowDelete()}}>
-                                <Ionicons name="trash-bin-outline" size={24} color="red" />
-                            </TouchableOpacity>
+                            <View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={() => {toggleInfoVisibility(); toggleToShowEdit()}} style={{paddingHorizontal: 5}}>
+                                    <Ionicons name="create-outline" size={24} color="black" />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {toggleInfoVisibility(); toggleToShowDelete()}} style={{paddingHorizontal: 5}}>
+                                    <Ionicons name="trash-bin-outline" size={24} color="red" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={styles.textWrapper}>
                             <Text style={styles.infoText}>{mod['description']}</Text>
