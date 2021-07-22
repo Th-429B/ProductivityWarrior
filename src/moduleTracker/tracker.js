@@ -102,13 +102,8 @@ function TodoListScreen() {
 
     // updates CAP when a module is edited
     const editCAP = (intMC, grade, newGrade) => {
-        updateCAP(intMC, grade)
-        const mc = totalMC * 1 + intMC * 1;
-        const cap = capTotal + (intMC * gradeMap[newGrade]);
-        setTotalMC(mc);
-        setCapTotal(cap);
-        console.log(totalMC)
-        console.log(capTotal)
+        const newCAPTotal = capTotal - (intMC * gradeMap[grade]) + (intMC * gradeMap[newGrade])
+        setCapTotal(newCAPTotal)
     }
 
     const refreshCAP = () => {
@@ -127,7 +122,7 @@ function TodoListScreen() {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && !item['moduleCode'].startsWith('GE')).map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -135,7 +130,7 @@ function TodoListScreen() {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -143,7 +138,7 @@ function TodoListScreen() {
         return(
             modulesTaken.filter(item => item['moduleCode'].startsWith('GE')).map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
