@@ -26,7 +26,7 @@ const editModal = ({navigation, modulesTaken, setModulesTaken, mod, refreshCAP,}
                 const mod = temp[i];
                 const oldGrade = mod.grade
                 mod.grade = grade;
-                refreshCAP(mod.moduleCredit, oldGrade, grade)
+                refreshCAP(parseInt(mod.moduleCredit), oldGrade, grade)
                 break;
             }
         }
