@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     View,
     Text,
@@ -15,6 +15,10 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
 
     const loadMods = (arr) => {
         const modulesTest = [];
+        let modsNum = arr.length;
+        let modsAdded = 0;
+        let modsExist = 0;
+        let modsNotFound = 0;
         for (let i = 0; i < arr.length; i++) {
             const code = arr[i].toUpperCase()
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
@@ -34,14 +38,19 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                         SU: false,
                     }
                     modulesTest.push(newMod);
+                    modsAdded += 1;
                 } catch (e) {
                     alert("invalid module code " + code)
+                    modsNotFound += 1;
                 }
+            } else {
+                modsExist += 1;
             }
         }
         const temp = [...modulesTaken, ...modulesTest]
         setModulesTaken(temp)
         navigation()
+        console.log(`${modsAdded} of ${modsNum} mods added, ${modsExist} mods already exist, ${modsNotFound} mods not found`);
     }
 
     const loadPresetMenu = () => {
