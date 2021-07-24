@@ -32,7 +32,7 @@ const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
 
     // states for adding events
     const [eventDate, setEventDate] = useState();
-    const [event, setEvent] = useState();
+    const [event, setEvent] = useState(null);
 
     // states for datepicker
     const [show, setShow] = useState(false);
@@ -51,11 +51,12 @@ const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
     };
 
     const addEvent = () => {
+        const temp = event === null ? "Empty Event" : event
+        // console.log(event)
         if (findDate(eventDate)) {
-            eventItems[eventDate].push({name: event})
+            eventItems[eventDate].push({name: temp})
         } else {
-            eventItems[eventDate] = [{name: event}]
-        }
+            eventItems[eventDate] = [{name: temp}]
         setEventItems(eventItems)
         saveData(eventItems);
         setEventDate(null);
