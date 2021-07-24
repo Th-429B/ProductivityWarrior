@@ -26,11 +26,11 @@ function ProductivityScreen() {
         (async () => {
             const { status } = await Brightness.requestPermissionsAsync();
             if (status === 'granted') {
-                console.log("Permission granted")
+                // console.log("Permission granted")
                 const {brightness} = await Brightness.getBrightnessAsync();
                 if (brightness <= 1) {
                     setBright(brightness)
-                    console.log(bright)
+                    // console.log(bright)
                 }
             }
         })();
