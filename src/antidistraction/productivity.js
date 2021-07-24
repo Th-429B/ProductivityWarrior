@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
-import {Text, View, StyleSheet, TouchableOpacity, LogBox, TextInput, Keyboard} from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, LogBox, TextInput, Keyboard, Alert} from "react-native";
 import * as Brightness from 'expo-brightness';
-
+import {getQuote} from "./quotesData";
 
 
 function ProductivityScreen() {
@@ -18,7 +18,7 @@ function ProductivityScreen() {
         }
         if (seconds === 0) {
             Brightness.setBrightnessAsync(0.5)
-            alert("done")
+            Alert.alert('Time to take a break!', getQuote()['phrase'])
         }
     }, [seconds, timerOn]);
 
