@@ -20,6 +20,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
     const [grade, setGrade] = useState('A+');
     const [applySU, setApplySU] = useState(false);
     const [moduleData, setModuleData] = useState(null);
+    const [moduleType, setModuleType] = useState("UE");
 
     const done = () => {
         if (!textInput) {
@@ -50,6 +51,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                         faculty: moduleData['faculty'],
                         grade: grade,
                         SU: applySU,
+                        type: moduleData['moduleCode'].startsWith('GE') ? "GE" : moduleType,
                     }
 
                     const newMods = [...modulesTaken, newMod];
@@ -204,6 +206,8 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                 </View>
 
                 {canSU()}
+
+                {/*showModuleType()*/}
 
             </View>
         </SafeAreaView>

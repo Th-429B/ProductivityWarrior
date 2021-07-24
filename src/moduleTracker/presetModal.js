@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     View,
     Text,
@@ -9,15 +9,16 @@ import {
     StatusBar,
 } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-
-// MA1101r is changed to MA2001 need to update module information
-const cs = ["cs1101s", "cs1231s", "cs2030s", "cs2040s", "cs2100",
-"cs2103t", "cs2106", "cs3230", "is1103", "CS2101", "ES2660" , "MA1521" , "ma1101r" , "ST2334"]
+import {presets} from "./presetData";
 
 const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) => {
 
     const loadMods = (arr) => {
         const modulesTest = [];
+        let modsNum = arr.length;
+        let modsAdded = 0;
+        let modsExist = 0;
+        let modsNotFound = 0;
         for (let i = 0; i < arr.length; i++) {
             const code = arr[i].toUpperCase()
             const exist = modulesTaken.filter((mod) => mod['moduleCode'] === code);
@@ -35,16 +36,36 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                         faculty: moduleData['faculty'],
                         grade: "NA",
                         SU: false,
+                        type: "core"
                     }
                     modulesTest.push(newMod);
+                    modsAdded += 1;
                 } catch (e) {
                     alert("invalid module code " + code)
+                    modsNotFound += 1;
                 }
+            } else {
+                exist[0]['type'] = "core";
+                modsExist += 1;
             }
         }
         const temp = [...modulesTaken, ...modulesTest]
         setModulesTaken(temp)
         navigation()
+        console.log(`${modsAdded} of ${modsNum} mods added, ${modsExist} mods already exist, ${modsNotFound} mods not found`);
+    }
+
+    const loadPresetMenu = () => {
+        return(
+            presets.map((item, index) => {
+                return <View key={index}>
+                    <TouchableOpacity style={styles.button} onPress={() => {loadMods(item.modules)}}>
+                        <View style={styles.innerButton}>
+                            <Text>{item.major}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+        }))
     }
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
@@ -62,11 +83,7 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
                     <Text style={styles.headerText}>Load Preset Modules</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => {loadMods(cs)}}>
-                    <View style={styles.innerButton}>
-                        <Text >Computer Science</Text>
-                    </View>
-                </TouchableOpacity>
+                {loadPresetMenu()}
             </View>
         </SafeAreaView>
     )

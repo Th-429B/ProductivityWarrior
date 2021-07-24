@@ -17,7 +17,7 @@ import DeleteAll from "./deleteModal";
 import moduleData from "./moduleInfo.json";
 import {loadModules, saveModules} from "./storage";
 
-function TodoListScreen() {
+function TrackerScreen() {
 
     /*
     useEffect(() => {
@@ -84,16 +84,6 @@ function TodoListScreen() {
         //saveData([]);
     }
 
-    const placeHolderText = () => {
-        if (!modulesTaken.length) {
-            return(
-                <View style={styles.placeholder}>
-                    <Text style={{fontSize: 15,}}>You have no modules taken</Text>
-                </View>
-            )
-        }
-    }
-
     // updates CAP when a module is deleted
     const updateCAP = (intMC, grade) => {
         setTotalMC(totalMC - intMC);
@@ -102,13 +92,8 @@ function TodoListScreen() {
 
     // updates CAP when a module is edited
     const editCAP = (intMC, grade, newGrade) => {
-        updateCAP(intMC, grade)
-        const mc = totalMC * 1 + intMC * 1;
-        const cap = capTotal + (intMC * gradeMap[newGrade]);
-        setTotalMC(mc);
-        setCapTotal(cap);
-        console.log(totalMC)
-        console.log(capTotal)
+        const newCAPTotal = capTotal - (intMC * gradeMap[grade]) + (intMC * gradeMap[newGrade])
+        setCapTotal(newCAPTotal)
     }
 
     const refreshCAP = () => {
@@ -123,28 +108,67 @@ function TodoListScreen() {
         setCapTotal(cap)
     }
 
-    const showTakenModules = () => {
+    const showCoreModules = () => {
         return(
-            modulesTaken.filter(item => item['grade'] !== 'NA' && !item['moduleCode'].startsWith('GE')).map((item, index) => {
+            modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'core').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
-    const showPresetModules = () => {
+    const showPresetCoreModules = () => {
         return(
-            modulesTaken.filter(item => item['grade'] === 'NA').map((item, index) => {
+            modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'core').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+        )
+    }
+
+    const showUEModules = () => {
+        return(
+            modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'UE').map((item, index) => {
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+        )
+    }
+
+    const showPresetUEModules = () => {
+        return(
+            modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'UE').map((item, index) => {
+                return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
     const showGEModules = () => {
         return(
-            modulesTaken.filter(item => item['moduleCode'].startsWith('GE')).map((item, index) => {
+            modulesTaken.filter(item => item['type'] === 'GE').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={refreshCAP} key={index}/>})
+                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
+    }
+
+    const renderMods = () => {
+        if (!modulesTaken.length) {
+            return(
+                <View style={styles.placeholder}>
+                    <Text style={{fontSize: 15,}}>You have no modules taken</Text>
+                </View>
+            )
+        } else {
+            return (
+                <ScrollView style={styles.scroll}>
+                    <Text style={styles.subheading}>General Education Modules</Text>
+                    {showGEModules()}
+                    <Text style={styles.subheading}>Core Modules</Text>
+                    {showCoreModules()}
+                    {showPresetCoreModules()}
+                    <Text style={styles.subheading}>Unrestricted Electives</Text>
+                    {showUEModules()}
+                    {showPresetUEModules()}
+                </ScrollView>
+            )
+        }
     }
 
     return (
@@ -158,14 +182,7 @@ function TodoListScreen() {
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.tasks}>
-                    {placeHolderText()}
-                    <ScrollView style={styles.scroll}>
-                        <Text style={styles.subheading}>General Education Modules</Text>
-                        {showGEModules()}
-                        <Text style={styles.subheading}>Core Modules</Text>
-                        {showTakenModules()}
-                        {showPresetModules()}
-                    </ScrollView>
+                    {renderMods()}
                 </View>
             </View>
 
@@ -258,4 +275,4 @@ const styles = StyleSheet.create({
     }
 )
 
-export default TodoListScreen
+export default TrackerScreen

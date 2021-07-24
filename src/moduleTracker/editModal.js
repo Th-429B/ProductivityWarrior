@@ -23,13 +23,15 @@ const editModal = ({navigation, modulesTaken, setModulesTaken, mod, refreshCAP,}
 
         for (let i = 0; i < temp.length; i++) {
             if (temp[i].moduleCode === mod['moduleCode']) {
-                temp[i].grade = grade;
+                const mod = temp[i];
+                const oldGrade = mod.grade
+                mod.grade = grade;
+                refreshCAP(parseInt(mod.moduleCredit), oldGrade, grade)
                 break;
             }
         }
         // console.log(temp)
         setModulesTaken(temp)
-        refreshCAP();
         navigation();
     }
 
