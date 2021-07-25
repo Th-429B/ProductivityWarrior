@@ -57,13 +57,13 @@ const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
             eventItems[eventDate].push({name: temp})
         } else {
             eventItems[eventDate] = [{name: temp}]
-        setEventItems(eventItems)
-        saveData(eventItems);
-        setEventDate(null);
-        setEvent(null);
-        Keyboard.dismiss();
-        alert('Event added!')
-
+            setEventItems(eventItems)
+            saveData(eventItems);
+            setEventDate(null);
+            setEvent(null);
+            Keyboard.dismiss();
+            alert('Event added!')
+        }
     }
 
     // const deleteAllEvents = () => {
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddEventModal
+export default AddEventModal;

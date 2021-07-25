@@ -11,7 +11,7 @@ import {
 import {Ionicons} from "@expo/vector-icons";
 import {presets} from "./presetData";
 
-const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) => {
+const presetModal = ({navigation, modulesTaken, modulesStateStorageHelper, moduleList,}) => {
 
     const loadMods = (arr) => {
         const modulesTest = [];
@@ -50,7 +50,7 @@ const presetModal = ({navigation, modulesTaken, setModulesTaken, moduleList,}) =
             }
         }
         const temp = [...modulesTaken, ...modulesTest]
-        setModulesTaken(temp)
+        modulesStateStorageHelper(temp)
         navigation()
         console.log(`${modsAdded} of ${modsNum} mods added, ${modsExist} mods already exist, ${modsNotFound} mods not found`);
     }

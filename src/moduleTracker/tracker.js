@@ -15,15 +15,14 @@ import NewMod from './newMod';
 import Settings from './settingsModal';
 import DeleteAll from "./deleteModal";
 import moduleData from "./moduleInfo.json";
-import {loadModules, saveModules} from "./storage";
+import {loadData, saveModules, saveMC, saveCAP} from "./storage";
 
 function TrackerScreen() {
 
-    /*
     useEffect(() => {
-        loadData((tasks) => setModulesTaken(tasks))
+        loadData(setModulesTaken, setCapTotal, setTotalMC)
     }, []);
-    */
+
     const [capTotal, setCapTotal] = useState(0);
     const [totalMC, setTotalMC] = useState(0);
     /* Stores all the modules taken */
@@ -78,22 +77,23 @@ function TrackerScreen() {
     }
 
     const deleteAll = () => {
-        setModulesTaken([]);
-        setCapTotal(0);
-        setTotalMC(0);
-        //saveData([]);
+        moduleStateStorageHelper([]);
+        capStateStorageHelper(0);
+        mcStateStorageHelper(0);
     }
 
     // updates CAP when a module is deleted
     const updateCAP = (intMC, grade) => {
-        setTotalMC(totalMC - intMC);
-        setCapTotal(capTotal - (intMC * gradeMap[grade]));
+        const newTotalMC = totalMC - intMC
+        const newCapTotal = capTotal - (intMC * gradeMap[grade])
+        mcStateStorageHelper(newTotalMC)
+        capStateStorageHelper(newCapTotal)
     }
 
     // updates CAP when a module is edited
     const editCAP = (intMC, grade, newGrade) => {
         const newCAPTotal = capTotal - (intMC * gradeMap[grade]) + (intMC * gradeMap[newGrade])
-        setCapTotal(newCAPTotal)
+        capStateStorageHelper(newCAPTotal)
     }
 
     const refreshCAP = () => {
@@ -112,7 +112,7 @@ function TrackerScreen() {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'core').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+                               modulesStateStorageHelper={moduleStateStorageHelper} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -120,7 +120,7 @@ function TrackerScreen() {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'core').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+                               modulesStateStorageHelper={moduleStateStorageHelper} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -128,7 +128,7 @@ function TrackerScreen() {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'UE').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+                               modulesStateStorageHelper={moduleStateStorageHelper} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -136,7 +136,7 @@ function TrackerScreen() {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'UE').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+                               modulesStateStorageHelper={moduleStateStorageHelper} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -144,7 +144,7 @@ function TrackerScreen() {
         return(
             modulesTaken.filter(item => item['type'] === 'GE').map((item, index) => {
                 return <Module mod={item} index={modulesTaken.indexOf(item)} modulesTaken={modulesTaken}
-                               setModulesTaken={setModulesTaken} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
+                               modulesStateStorageHelper={moduleStateStorageHelper} updateCAP={updateCAP} refreshCAP={editCAP} key={index}/>})
         )
     }
 
@@ -171,12 +171,27 @@ function TrackerScreen() {
         }
     }
 
+    const moduleStateStorageHelper = (mods) => {
+        setModulesTaken(mods);
+        saveModules(mods)
+    }
+
+    const capStateStorageHelper = (cap) => {
+        setCapTotal(cap);
+        saveCAP(cap);
+    }
+
+    const mcStateStorageHelper = (mc) => {
+        setTotalMC(mc);
+        saveMC(mc);
+    }
+
     return (
         <SafeAreaView style = {styles.safe(paddingValue)}>
             <View style = {styles.container}>
                 <View style={styles.headerRow}>
                     <Text style = {styles.headerText}>Module Tracker</Text>
-                    <Text>Current CAP: {totalMC === 0 ? 'NA' : (capTotal/totalMC).toFixed(2)}</Text>
+                    <Text>CAP: {totalMC === 0 ? 'NA' : (capTotal/totalMC).toFixed(2)}</Text>
                     <TouchableOpacity onPress={() => toggleSettingVisibility()}>
                         <Ionicons name="ios-settings-outline" size={28} color="black" />
                     </TouchableOpacity>
@@ -194,15 +209,15 @@ function TrackerScreen() {
             {/* Add modal */}
             <Modal onBackButtonPress={() => toggleAddVisibility()} onBackdropPress={() => toggleAddVisibility()}
                    isVisible={addVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal}>
-                <NewMod navigation={() => toggleAddVisibility()} setModulesTaken={setModulesTaken} modulesTaken={modulesTaken}
-                        moduleList={moduleData} totalMC={totalMC} setTotalMC={setTotalMC} capTotal={capTotal} setCapTotal={setCapTotal} gradeMap={gradeMap}/>
+                <NewMod navigation={() => toggleAddVisibility()} modulesStateStorageHelper={moduleStateStorageHelper} modulesTaken={modulesTaken}
+                        moduleList={moduleData} totalMC={totalMC} mcStateStorageHelper={mcStateStorageHelper} capTotal={capTotal} capStateStorageHelper={capStateStorageHelper} gradeMap={gradeMap}/>
             </Modal>
 
             {/* Settings modal */}
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
                    isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
                 <Settings navigation={() => toggleSettingVisibility()} toggleDelete={() => toggleToShowDelete()}
-                          setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} moduleList={moduleData} />
+                          modulesStateStoregeHelper={moduleStateStorageHelper} modulesTaken={modulesTaken} moduleList={moduleData} />
             </Modal>
 
             {/* Delete all confirmation modal */}

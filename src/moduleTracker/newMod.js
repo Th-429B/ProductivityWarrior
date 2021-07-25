@@ -9,11 +9,10 @@ import {
     TouchableOpacity,
     SafeAreaView, StatusBar, Alert
 } from "react-native";
-import {saveModules} from "./storage";
 import {Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {Picker} from '@react-native-picker/picker';
 
-const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC, setTotalMC, capTotal, setCapTotal, gradeMap}) => {
+const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList, totalMC, mcStateStorageHelper, capTotal, capStateStorageHelper, gradeMap}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [textInput, setTextInput] = useState(null);
@@ -40,7 +39,7 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     const module = exist[0];
                     module['grade'] = grade;
                     module['SU'] = applySU;
-                    setModulesTaken(modulesTaken)
+                    modulesStateStorageHelper(modulesTaken)
                 } else {
                     const newMod = {
                         moduleCode: moduleData['moduleCode'],
@@ -55,13 +54,12 @@ const NewMod = ({setModulesTaken, modulesTaken, navigation, moduleList, totalMC,
                     }
 
                     const newMods = [...modulesTaken, newMod];
-                    setModulesTaken(newMods);
-                    //saveModules(newMods)
+                    modulesStateStorageHelper(newMods);
                 }
                 if (!applySU && grade !== 'CS' && grade !== 'CU') {
                     const intMC = parseInt(moduleData['moduleCredit'])
-                    setTotalMC(totalMC + intMC);
-                    setCapTotal(capTotal + intMC * gradeMap[grade]);
+                    mcStateStorageHelper(totalMC + intMC);
+                    capStateStorageHelper(capTotal + intMC * gradeMap[grade]);
                 }
 
                 setTextInput(null);
