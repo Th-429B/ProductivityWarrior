@@ -4,6 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 const settingsModal = ({navigation, toggleCompleted, completedVisibility, toggleDelete, markAllComplete}) => {
 
+    // Renders different options depending on whether the show completed option has been toggled
     const showCompleted = () => {
         if (completedVisibility) {
             return (

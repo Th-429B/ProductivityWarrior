@@ -6,12 +6,14 @@ import {saveData} from "./storage";
 const NewTask = ({taskList, setTaskList}) => {
     const [task, setTask] = useState("");
 
+    // Adds new task to state and updates asyncstorage
     const addTask = (newTask) => {
         const newTodos = [...taskList, newTask];
         setTaskList(newTodos);
         saveData(newTodos)
     }
 
+    // Creates new task
     const handleNewTask = () => {
         if (task !== "") {
             const ID = uuid.v4();
