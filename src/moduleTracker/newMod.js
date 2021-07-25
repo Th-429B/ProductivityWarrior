@@ -15,12 +15,18 @@ import {Picker} from '@react-native-picker/picker';
 const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList, totalMC, mcStateStorageHelper, capTotal, capStateStorageHelper, gradeMap}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    // State that stores module code that the user inputs
     const [textInput, setTextInput] = useState(null);
+    // State that stores the module grade that the user inputs
     const [grade, setGrade] = useState('A+');
+    // State that stores if the user has applied SU option to the module
     const [applySU, setApplySU] = useState(false);
+    // State that stores the module data corresponding to the module code user entered, which is retrieved from the database
     const [moduleData, setModuleData] = useState(null);
+    // State that stores module type i.e GE, UE or Core Modules
     const [moduleType, setModuleType] = useState("UE");
 
+    // Processes the information that the user entered
     const done = () => {
         if (!textInput) {
             Alert.alert('Module code is empty!');
@@ -82,6 +88,7 @@ const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList
         setApplySU(!applySU);
     }
 
+    // Find the module from the database using the module code that the user entered
     const findModule = (modCode) => {
         const code = (modCode).toUpperCase();
         const module = moduleList.filter((mod) => mod['moduleCode'] === code);
@@ -93,6 +100,7 @@ const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList
         setApplySU(false);
     }
 
+    // Determines if the SU option should be displayed or not, and renders accordingly
     const canSU = () => {
         try {
             if ("attributes" in moduleData && "su" in moduleData["attributes"]) {
@@ -117,6 +125,7 @@ const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList
         }
     }
 
+    // Renders the SU option
     const showSU = () => {
         if (applySU) {
             return (
@@ -135,6 +144,7 @@ const NewMod = ({modulesStateStorageHelper, modulesTaken, navigation, moduleList
         }
     }
 
+    // Shows the module data if module code that the user entered is correct
     const showModuleInfo = () => {
         if (moduleData) {
             return (

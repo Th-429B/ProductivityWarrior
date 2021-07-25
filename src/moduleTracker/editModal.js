@@ -18,6 +18,7 @@ const editModal = ({navigation, modulesTaken, moduleStateStorageHelper, mod, ref
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
+    // Updates grade of the selected module to the new grade
     const done = () => {
         const temp = modulesTaken;
 

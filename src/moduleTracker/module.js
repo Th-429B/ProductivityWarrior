@@ -9,6 +9,7 @@ import Edit from "./editModal";
 
 const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refreshCAP, index}) => {
 
+    // Load custom font
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
     })
@@ -28,10 +29,15 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         'NA': 'Not Taken'
     }
 
-    const [infoVisibility, setInfoVisibility] =useState(false);
+    // State determining if the module information modal is shown
+    const [infoVisibility, setInfoVisibility] = useState(false);
+    // State determining if the delete confirmation modal is shown
     const [deleteVisibility, setDeleteVisibility] = useState(false);
+    // Helper state for deleting modules
     const [toShowDelete, setToShowDelete] = useState(false);
-    const [editVisibility, setEditVisibility] =useState(false);
+    // State determining if the module edit modal is shown
+    const [editVisibility, setEditVisibility] = useState(false);
+    // Helper state for editing module grades
     const [toShowEdit, setToShowEdit] = useState(false);
 
     const toggleInfoVisibility = () => {
@@ -54,6 +60,7 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         setToShowEdit(!toShowEdit);
     }
 
+    // Helper function to load the module edit modal or delete confirmation modal
     const showAdditional = () => {
         if (toShowDelete) {
             toggleDeleteVisibility();
@@ -64,6 +71,7 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         }
     }
 
+    // Deletes a module from the module list
     const deleteMod = () => {
         updateCAP(mod['moduleCredit'], mod['grade']);
         const newMods = [...modulesTaken];
@@ -71,6 +79,7 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         modulesStateStorageHelper(newMods);
     }
 
+    // Not used
     const changeGrade = () => {
         const temp = modulesTaken;
 
@@ -85,6 +94,7 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         refreshCAP();
     }
 
+    // Renders a module that is taken
     const completeView = () => {
         return (
             <TouchableOpacity onPress={() => toggleInfoVisibility()}>
@@ -102,6 +112,7 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
         )
     }
 
+    // Renders a module that is not taken
     const incompleteView = () => {
         return (
             <View style={[styles.item, {backgroundColor: 'grey'}]}>
@@ -117,8 +128,6 @@ const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refres
             </View>
         )
     }
-
-
 
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
 

@@ -13,6 +13,7 @@ import {presets} from "./presetData";
 
 const presetModal = ({navigation, modulesTaken, modulesStateStorageHelper, moduleList,}) => {
 
+    // Adds preset mods to user's list of mods
     const loadMods = (arr) => {
         const modulesTest = [];
         let modsNum = arr.length;
@@ -55,6 +56,7 @@ const presetModal = ({navigation, modulesTaken, modulesStateStorageHelper, modul
         console.log(`${modsAdded} of ${modsNum} mods added, ${modsExist} mods already exist, ${modsNotFound} mods not found`);
     }
 
+    // Renders the preset menu
     const loadPresetMenu = () => {
         return(
             presets.map((item, index) => {

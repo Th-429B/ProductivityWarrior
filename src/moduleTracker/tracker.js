@@ -19,6 +19,7 @@ import {loadData, saveModules, saveMC, saveCAP} from "./storage";
 
 function TrackerScreen() {
 
+    // Loads information from async storage on startup
     useEffect(() => {
         loadData(setModulesTaken, setCapTotal, setTotalMC)
     }, []);
@@ -76,6 +77,7 @@ function TrackerScreen() {
         }
     }
 
+    // Delete all modules ever taken. Resets all states and storages
     const deleteAll = () => {
         moduleStateStorageHelper([]);
         capStateStorageHelper(0);
@@ -96,6 +98,7 @@ function TrackerScreen() {
         capStateStorageHelper(newCAPTotal)
     }
 
+    // Not used
     const refreshCAP = () => {
         let mc = 0;
         let cap = 0
@@ -108,6 +111,7 @@ function TrackerScreen() {
         setCapTotal(cap)
     }
 
+    // Renders core mods that have been taken
     const showCoreModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'core').map((item, index) => {
@@ -116,6 +120,7 @@ function TrackerScreen() {
         )
     }
 
+    // Renders core mods that has not been taken
     const showPresetCoreModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'core').map((item, index) => {
@@ -124,6 +129,7 @@ function TrackerScreen() {
         )
     }
 
+    // Renders UE mods that have been taken
     const showUEModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] !== 'NA' && item['type'] === 'UE').map((item, index) => {
@@ -132,6 +138,7 @@ function TrackerScreen() {
         )
     }
 
+    // Renders UE mods that have not been taken
     const showPresetUEModules = () => {
         return(
             modulesTaken.filter(item => item['grade'] === 'NA' && item['type'] === 'UE').map((item, index) => {
@@ -140,6 +147,7 @@ function TrackerScreen() {
         )
     }
 
+    // Renders GE modules that have been taken
     const showGEModules = () => {
         return(
             modulesTaken.filter(item => item['type'] === 'GE').map((item, index) => {
@@ -148,6 +156,7 @@ function TrackerScreen() {
         )
     }
 
+    // Renders all modules accordingly
     const renderMods = () => {
         if (!modulesTaken.length) {
             return(
@@ -171,16 +180,19 @@ function TrackerScreen() {
         }
     }
 
+    // Helper that sets state and storage for modulesTaken
     const moduleStateStorageHelper = (mods) => {
         setModulesTaken(mods);
         saveModules(mods)
     }
 
+    // Helper that sets state and storage for capTotal
     const capStateStorageHelper = (cap) => {
         setCapTotal(cap);
         saveCAP(cap);
     }
 
+    // Helper that sets state and storage for totalMC
     const mcStateStorageHelper = (mc) => {
         setTotalMC(mc);
         saveMC(mc);

@@ -5,6 +5,7 @@ const STORAGE_MODS = '@save_modules'
 const STORAGE_CAP = '@save_cap'
 const STORAGE_MC = '@save_mc'
 
+// Load all data stored in asyncstorage
 export const loadData = async (setModulesTaken, setCapTotal, setTotalMC) => {
     try {
         const mods = await AsyncStorage.getItem(STORAGE_MODS);
@@ -22,6 +23,7 @@ export const loadData = async (setModulesTaken, setCapTotal, setTotalMC) => {
     }
 }
 
+// Updates modules stored in async storage
 export const saveModules = async (modList) => {
     try {
         AsyncStorage.setItem(STORAGE_MODS, JSON.stringify(modList));
@@ -31,6 +33,7 @@ export const saveModules = async (modList) => {
     }
 }
 
+// Updates capTotal stored in async storage
 export const saveCAP = async (cap) => {
     try {
         AsyncStorage.setItem(STORAGE_CAP, JSON.stringify(cap));
@@ -40,6 +43,7 @@ export const saveCAP = async (cap) => {
     }
 }
 
+// Updates totalMC stored in async storage
 export const saveMC = async (mc) => {
     try {
         AsyncStorage.setItem(STORAGE_MC, JSON.stringify(mc));
