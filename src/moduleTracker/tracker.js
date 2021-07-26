@@ -229,7 +229,7 @@ function TrackerScreen() {
             <Modal onBackButtonPress={() => toggleSettingVisibility()} onBackdropPress={() => toggleSettingVisibility()}
                    isVisible={settingVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.modal} onModalHide={() => showDelete()}>
                 <Settings navigation={() => toggleSettingVisibility()} toggleDelete={() => toggleToShowDelete()}
-                          modulesStateStoregeHelper={moduleStateStorageHelper} modulesTaken={modulesTaken} moduleList={moduleData} />
+                          modulesStateStorageHelper={moduleStateStorageHelper} modulesTaken={modulesTaken} moduleList={moduleData} />
             </Modal>
 
             {/* Delete all confirmation modal */}
