@@ -12,12 +12,14 @@ import {
 import {Ionicons} from "@expo/vector-icons";
 import {saveData} from "./storage";
 
+// Edit confirmation modal
 const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) => {
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
     const [text, setText] = useState(task['text']);
     const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+    // Processes edits after user presses done.
     const done = () => {
         if (!text) {
             Alert.alert('Task is empty!');
@@ -40,6 +42,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
         navigation();
     }
 
+    // Allows users to edit task only if task has not been completed
     const editText = () => {
         if (!task['completed']) {
             return(
@@ -48,6 +51,7 @@ const editTaskModal = ({navigation, index, setState, state, task, deleteTask}) =
         }
     }
 
+    // Shows creation date of the task in the appropriate format
     const parseDate = () => {
         const dateObj = task['created'];
         const date = dateObj.getDate();

@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, LogBox, TouchableOpacity} from "react-native";
 import Modal from 'react-native-modal';
-import {saveModules} from "./storage";
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from "expo-app-loading";
 import {Ionicons} from "@expo/vector-icons";
 import Delete from "./deleteModal"
 import Edit from "./editModal";
 
-const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, index}) => {
+const Module = ({mod, modulesTaken, modulesStateStorageHelper, updateCAP, refreshCAP, index}) => {
 
+    // Load custom font
     let [fontsLoaded] = useFonts({
         'appleberry': require('../../assets/fonts/appleberry.ttf')
     })
@@ -29,10 +29,15 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
         'NA': 'Not Taken'
     }
 
-    const [infoVisibility, setInfoVisibility] =useState(false);
+    // State determining if the module information modal is shown
+    const [infoVisibility, setInfoVisibility] = useState(false);
+    // State determining if the delete confirmation modal is shown
     const [deleteVisibility, setDeleteVisibility] = useState(false);
+    // Helper state for deleting modules
     const [toShowDelete, setToShowDelete] = useState(false);
-    const [editVisibility, setEditVisibility] =useState(false);
+    // State determining if the module edit modal is shown
+    const [editVisibility, setEditVisibility] = useState(false);
+    // Helper state for editing module grades
     const [toShowEdit, setToShowEdit] = useState(false);
 
     const toggleInfoVisibility = () => {
@@ -55,6 +60,7 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
         setToShowEdit(!toShowEdit);
     }
 
+    // Helper function to load the module edit modal or delete confirmation modal
     const showAdditional = () => {
         if (toShowDelete) {
             toggleDeleteVisibility();
@@ -65,14 +71,15 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
         }
     }
 
+    // Deletes a module from the module list
     const deleteMod = () => {
         updateCAP(mod['moduleCredit'], mod['grade']);
         const newMods = [...modulesTaken];
         newMods.splice(index, 1);
-        setModulesTaken(newMods);
-        //saveData(newTodos);
+        modulesStateStorageHelper(newMods);
     }
 
+    // Not used
     const changeGrade = () => {
         const temp = modulesTaken;
 
@@ -83,10 +90,11 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
             }
         }
         // console.log(temp)
-        setModulesTaken(temp)
+        modulesStateStorageHelper(temp)
         refreshCAP();
     }
 
+    // Renders a module that is taken
     const completeView = () => {
         return (
             <TouchableOpacity onPress={() => toggleInfoVisibility()}>
@@ -104,6 +112,7 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
         )
     }
 
+    // Renders a module that is not taken
     const incompleteView = () => {
         return (
             <View style={[styles.item, {backgroundColor: 'grey'}]}>
@@ -119,8 +128,6 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
             </View>
         )
     }
-
-
 
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
 
@@ -156,7 +163,7 @@ const Module = ({mod, modulesTaken, setModulesTaken, updateCAP, refreshCAP, inde
                 <Modal onBackButtonPress={() => toggleEditVisibility()} onBackdropPress={() => toggleEditVisibility()}
                        isVisible={editVisibility} backdropOpacity={0.3} backdropColor={'#878787'} style={styles.edit}>
                     <Edit navigation={() => toggleEditVisibility()}
-                            setModulesTaken={setModulesTaken} modulesTaken={modulesTaken} mod={mod} refreshCAP={refreshCAP}  />
+                            moduleStateStorageHelper={modulesStateStorageHelper} modulesTaken={modulesTaken} mod={mod} refreshCAP={refreshCAP}  />
                 </Modal>
 
                 {/* Delete confirmation modal */}
@@ -246,7 +253,7 @@ const styles = StyleSheet.create({
         fontFamily: 'appleberry',
         color: 'white',
         marginVertical: 0,
-        flex: 1
+        flex: 1,
     },
     gradeContainer: {
         flexDirection: 'column',

@@ -12,12 +12,13 @@ import {Ionicons} from "@expo/vector-icons";
 import {Picker} from "@react-native-picker/picker";
 
 
-const editModal = ({navigation, modulesTaken, setModulesTaken, mod, refreshCAP,}) => {
+const editModal = ({navigation, modulesTaken, moduleStateStorageHelper, mod, refreshCAP,}) => {
 
     const [grade, setGrade] = useState('A+');
 
     const paddingValue = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
+    // Updates grade of the selected module to the new grade
     const done = () => {
         const temp = modulesTaken;
 
@@ -31,8 +32,9 @@ const editModal = ({navigation, modulesTaken, setModulesTaken, mod, refreshCAP,}
             }
         }
         // console.log(temp)
-        setModulesTaken(temp)
+        moduleStateStorageHelper(temp)
         navigation();
+
     }
 
     return(

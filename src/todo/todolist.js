@@ -17,6 +17,7 @@ import {loadData, saveData} from "./storage";
 
 function TodoListScreen() {
 
+    // Loads tasks from asyncstorage
     useEffect(() => {
         loadData((tasks) => setTaskList(tasks))
     }, []);
@@ -50,6 +51,7 @@ function TodoListScreen() {
         setToShowDelete(!toShowDelete);
     }
 
+    // Shows delete confirmation modal
     const showDelete = () => {
         if (toShowDelete) {
             toggleDeleteVisibility();
@@ -57,11 +59,13 @@ function TodoListScreen() {
         }
     }
 
+    // Delete all tasks
     const deleteAll = () => {
         setTaskList([]);
         saveData([]);
     }
 
+    // Renders all incomplete tasks
     const showIncompleteTask = () => {
         return(
             taskList.filter((item) => item['completed'] === false).map((item, index) => {
@@ -70,6 +74,7 @@ function TodoListScreen() {
         )
     }
 
+    // Renders all completed tasks
     const showCompletedTask = () => {
         return(
             taskList.filter((item) => item['completed'] === true).map((item, index) => {
@@ -78,6 +83,7 @@ function TodoListScreen() {
         )
     }
 
+    // Placeholder text when there are no tasks
     const placeHolderText = () => {
         const hasIncompleteTask = taskList.filter((item) => item['completed'] === false).length
         if (!taskList.length || !hasIncompleteTask) {
@@ -89,6 +95,7 @@ function TodoListScreen() {
         }
     }
 
+    // Marks all tasks as complete
     const markAllComplete = () => {
         const newToDos = [...taskList];
         newToDos.map((item) => item['completed'] = true);

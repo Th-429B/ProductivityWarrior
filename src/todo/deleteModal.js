@@ -1,6 +1,7 @@
 import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 
+// Delete confirmation modal
 const deleteModal = ({navigation, deleteFunction, deleteAll}) => {
     return(
         <View style={styles.inner}>

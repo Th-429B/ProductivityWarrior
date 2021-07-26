@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const STORAGE_KEY = '@save_tasks'
 
+// Loads data from asyncstorage
 export const loadData = async (setState) => {
     try {
         const tasks = await AsyncStorage.getItem(STORAGE_KEY);
@@ -15,6 +16,7 @@ export const loadData = async (setState) => {
     }
 }
 
+// Stores todolist to asyncstorage
 export const saveData = async (taskList) => {
     try {
         AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(taskList));

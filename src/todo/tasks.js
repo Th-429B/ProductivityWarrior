@@ -23,6 +23,7 @@ const Tasks = ({task, state, setState, index}) => {
         setToShowDelete(!toShowDelete);
     }
 
+    // Shows delete confirmation modal
     const showDelete = () => {
         if (toShowDelete) {
             toggleDeleteVisibility();
@@ -30,6 +31,7 @@ const Tasks = ({task, state, setState, index}) => {
         }
     }
 
+    // Deletes task
     const deleteTask = () => {
         const newTodos = [...state];
         newTodos.splice(index, 1);
@@ -37,6 +39,7 @@ const Tasks = ({task, state, setState, index}) => {
         saveData(newTodos);
     }
 
+    // Mark task as completed
     const setComplete = () => {
         if (task['completed'] === false) {
             const newTodos = [...state];
@@ -47,6 +50,7 @@ const Tasks = ({task, state, setState, index}) => {
         }
     }
 
+    // Mark task as incomplete
     const setIncomplete = () => {
         if (task['completed'] === true) {
             const newTodos = [...state];
@@ -57,6 +61,7 @@ const Tasks = ({task, state, setState, index}) => {
         }
     }
 
+    // Renders tasks which are incomplete
     const incompleteView = () => {
         return (
                 <View style={styles.item}>
@@ -73,6 +78,7 @@ const Tasks = ({task, state, setState, index}) => {
         )
     }
 
+    // Renders tasks that are completed
     const completeView = () => {
         return (
             <View style={styles.item}>

@@ -64,7 +64,6 @@ const AddEventModal = ({closeModal, eventItems, setEventItems}) => {
             Keyboard.dismiss();
             alert('Event added!')
         }
-
     }
 
     // const deleteAllEvents = () => {
