@@ -10,6 +10,14 @@
 ## Description
 * This is a project for NUS CP2106 Orbital
 
+## Poster
+ ![Poster](https://github.com/Th-429B/ProductivityWarrior/blob/main/assets/Poster.png)
+
+## Links
+[README](https://docs.google.com/document/d/1EZjY7CRC_M_XN2IwGjDw6PJq0GsuC9o390VdUO1BVlo/edit?usp=sharing)
+
+[Video Demo](https://drive.google.com/file/d/1YtqPHnHuVpTy-d3YwLJmytXgEbtbuVRs/view?usp=sharing)
+
 ## Level of Achievement
 * Apollo 11
 
